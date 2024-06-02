@@ -1,9 +1,10 @@
 #ifndef DISASSEMBLY
-#include <windows,h>
-#include <capstone/capstone.h>
+#define DISASSEMBLY
+
+#include <windows.h>
 
 /* Converts RVA to file offset
- * 
+ * -------------------------------------------
  * param: pNtHeaders, NT headers of a PE file
  * param: rva, DWORD typed RVA to be converted
  *
