@@ -1,25 +1,30 @@
 CC := gcc
 SRCDIR := src
 BUILDDIR := build
-TARGET := bin/run
+BINDIR := bin
+TARGET := $(BINDIR)/pextract
 SRCEXT := c
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := 
-LIB := -L lib
+CFLAGS := -Wall -g -O3
+LIB := -L lib -lcapstone -limagehlp
 INC := -I include
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB) -O3
+	@mkdir -p $(BINDIR)
+	@echo " $(CC) $(OBJECTS) -o $(TARGET) $(LIB)"
+	$(CC) $(OBJECTS) -o $(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@echo " Building..."
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $< -save-temps -O3
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo " Cleaning..."; 
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	@echo " Cleaning..."
+	@echo " $(RM) -r $(BUILDDIR) $(BINDIR)/pextract"
+	$(RM) -r $(BUILDDIR) $(BINDIR)/pextract
 
 .PHONY: clean
