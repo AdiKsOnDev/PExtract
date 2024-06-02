@@ -17,7 +17,7 @@ TARGET := $(BINDIR)/pextract.exe
 SRCEXT := c
 ROOT_SOURCES := $(wildcard $(ROOTDIR)/*.$(SRCEXT))
 SRC_SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-SOURCES := $(ROOT_SOURCES) $(SRC_SOURCES)
+SOURCES := $(SRC_SOURCES) $(ROOT_SOURCES)
 OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o)))
 
 # Libraries and includes
@@ -28,8 +28,8 @@ INC := -I $(INCDIR)
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
 	@if not exist $(BINDIR) mkdir $(BINDIR)
-	@echo " $(CC) $(OBJECTS) -o $(TARGET) $(LIB)"
-	$(CC) $(OBJECTS) -o $(TARGET) $(LIB)
+	@echo " $(CC) $^ -o $(TARGET) $(LIB)"
+	$(CC) $^ -o $(TARGET) $(LIB)
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.$(SRCEXT)
