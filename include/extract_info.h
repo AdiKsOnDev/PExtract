@@ -2,6 +2,7 @@
 #define EXTRACT_FUNCTIONS
 
 #include <windows.h>
+#include <stdio.h>
 #include <capstone/capstone.h>
 
 /* Given pBase and Headers of a PE file,
