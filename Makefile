@@ -27,26 +27,29 @@ INC := -I $(INCDIR)
 # OS-specific settings
 ifeq ($(OS),Windows_NT)
     LIB += -limagehlp
+    MKDIR := if not exist $(1) mkdir $(1)
+else
+    MKDIR := mkdir -p $(1)
 endif
 
 # Default target
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@mkdir -p $(BINDIR)
+	@$(call MKDIR,$(BINDIR))
 	@echo " $(CC) $(OBJECTS) -o $(TARGET) $(LIB)"
 	$(CC) $(OBJECTS) -o $(TARGET) $(LIB)
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.$(SRCEXT)
 	@echo " Building $<..."
-	@mkdir -p $(BUILDDIR)
+	@$(call MKDIR,$(BUILDDIR))
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 # Build object files from src directory
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@echo " Building $<..."
-	@mkdir -p $(BUILDDIR)
+	@$(call MKDIR,$(BUILDDIR))
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
