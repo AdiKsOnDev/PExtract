@@ -33,17 +33,17 @@ $(TARGET): $(OBJECTS)
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.$(SRCEXT)
-	@echo " Building $<..."
+	@echo " Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
 
 # Build object files from src directory
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo " Building $<..."
+	@echo " Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
 
 # Clean build files
 clean:
