@@ -26,29 +26,29 @@ INC := -I $(INCDIR) -I $(INCDIR)/capstone
 
 # Default target
 $(TARGET): $(OBJECTS)
-	@echo " Linking..."
+	@echo "Linking..."
 	@if not exist $(BINDIR) mkdir $(BINDIR)
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"
+	@echo "$(CC) $^ -o $(TARGET) $(LIB)"
 	$(CC) $^ -o $(TARGET) $(LIB)
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.$(SRCEXT)
-	@echo " Building..."
+	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
+	@echo "$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)"
 	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
 
 # Build object files from src directory
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo " Building..."
+	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"
+	@echo "$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)"
 	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
 
 # Clean build files
 clean:
-	@echo " Cleaning..."
-	@echo " $(RM) -r $(BUILDDIR) $(BINDIR)/pextract.exe"
+	@echo "Cleaning..."
+	@echo "$(RM) -r $(BUILDDIR) $(BINDIR)/pextract.exe"
 	$(RM) -r $(BUILDDIR) $(BINDIR)/pextract.exe
 
 .PHONY: clean
