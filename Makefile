@@ -22,7 +22,7 @@ OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDD
 
 # Libraries and includes
 LIB := -L $(LIBDIR) -lcapstone -limagehlp
-INC := -I $(INCDIR)
+INC := -I $(INCDIR) -I $(INCDIR)/capstone
 
 # Default target
 $(TARGET): $(OBJECTS)
