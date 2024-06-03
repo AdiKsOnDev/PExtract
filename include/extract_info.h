@@ -26,4 +26,13 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
  */ 
 void extract_system_calls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
 
+/* Given the Headers of a PE file, extracts and prints out
+ * crucial system information, such as OS, Subsystem, etc.
+ * -------------------------------------------
+ * param: pNtHeaders, Headers of a PE file
+ *
+ * return: void
+ */ 
+void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders); 
+
 #endif // !EXTRACT_FUNCTIONS
