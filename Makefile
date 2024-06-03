@@ -14,11 +14,10 @@ LIBDIR := lib
 TARGET := $(BINDIR)/pextract.exe
 
 # Source and object files
-SRCEXT := c
-ROOT_SOURCES := $(wildcard $(ROOTDIR)/*.$(SRCEXT))
+ROOT_SOURCES := $(wildcard $(ROOTDIR)/*.c)
 SRC_SOURCES := $(shell dir /S /B $(SRCDIR)\*.c)
 SOURCES := $(SRC_SOURCES) $(ROOT_SOURCES)
-OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o)))
+OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.c=.o)))
 
 # Libraries and includes
 LIB := -L $(LIBDIR) -lcapstone -limagehlp
@@ -32,18 +31,18 @@ $(TARGET): $(OBJECTS)
 	$(CC) $^ -o $(TARGET) $(LIB)
 
 # Build object files from root directory
-$(BUILDDIR)/%.o: $(ROOTDIR)/%.$(SRCEXT)
+$(BUILDDIR)/%.o: $(ROOTDIR)/%.c
 	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 	@echo "$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)"
-	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
+	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $@ $^
 
 # Build object files from src directory
-$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 	@echo "$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)"
-	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $(TARGET)
+	$(CC) $(CFLAGS) $(INC) $(LIB) -c -o $@ $^
 
 # Clean build files
 clean:
