@@ -24,7 +24,7 @@ $(TARGET): $(OBJECTS)
 	@echo "Linking..."
 	@if not exist $(BINDIR) mkdir $(BINDIR)
 	@echo "$(CC) $^ -o $(TARGET) -L lib/ -lcapstone -limagehlp"
-	$(CC) $^ -o $(TARGET) -L lib/ -lcapstone -limagehlp
+	$(CC) $^ -o $(TARGET) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.c
