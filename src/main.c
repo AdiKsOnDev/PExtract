@@ -37,13 +37,11 @@ int main(int argc, char *argv[]) {
   while ((opt = getopt(argc, argv, OPTSTR)) != EOF)
     switch (opt) {
       case 'i':
-        perror(CHECK_FOPEN_INPUT);
-        exit(EXIT_FAILURE);
+        options.input = optarg;
         break;
 
       case 'o':
-        perror(CHECK_FOPEN_OUTPUT);
-        exit(EXIT_FAILURE);
+        options.output = optarg;
         break;
 
       case 'v':
