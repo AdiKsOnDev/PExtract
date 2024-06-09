@@ -10,7 +10,7 @@ BINDIR := bin
 INCDIR := include
 LIBDIR := lib
 
-# Target
+# Target binary
 TARGET := $(BINDIR)/pextract.exe
 
 # Source and object files
@@ -19,17 +19,13 @@ SRC_SOURCES := $(shell dir /S /B $(SRCDIR)\*.c)
 SOURCES := $(SRC_SOURCES) $(ROOT_SOURCES)
 OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.c=.o)))
 
-# Libraries and includes
-LIB := -L $(LIBDIR) -lcapstone -limagehlp
-INC := -I $(INCDIR) -I $(INCDIR)/capstone
-
 # Default target
 $(TARGET): $(OBJECTS)
 	@echo "Linking..."
 	@if not exist $(BINDIR) mkdir $(BINDIR)
 	@echo "$(CC) $^ -o $(TARGET) -L lib/ -lcapstone -limagehlp"
 	$(CC) $^ -o $(TARGET) -L lib/ -lcapstone -limagehlp
--L lib/ -lcapstone -limagehlp
+
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.c
 	@echo "Building..."
