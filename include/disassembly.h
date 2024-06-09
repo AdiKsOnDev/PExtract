@@ -11,4 +11,16 @@
  * return: DWORD offset
  */
 DWORD rva_to_offset(PIMAGE_NT_HEADERS pNtHeaders, DWORD rva); 
+
+/* Given pBase and Headers of a PE file,
+ * extracts the system calls utilized in the 
+ * executable. Uses capstone library
+ * -------------------------------------------
+ * param: pbase,
+ * param: pNtHeaders, Headers of a PE file
+ *
+ * return: void
+ */ 
+void extract_system_calls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
+
 #endif // !DISASSEMBLY
