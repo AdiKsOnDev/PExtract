@@ -17,7 +17,7 @@ TARGET := $(BINDIR)/pextract.exe
 ROOT_SOURCES := $(wildcard $(ROOTDIR)/*.c)
 SRC_SOURCES := $(shell dir /S /B $(SRCDIR)\*.c)
 SOURCES := $(SRC_SOURCES) $(ROOT_SOURCES)
-OBJECTS := $(patsubst $(ROOTDIR)/%,$(BUILDDIR)/%,$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.c=.o)))
+OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 
 # Default target
 $(TARGET): $(OBJECTS)
