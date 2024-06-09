@@ -1,4 +1,4 @@
-#include "include/pe_analyze.h"
+#include "../include/pe_analyze.h"
 
 int main() {
     char pe_path[] = "pefile.exe";
