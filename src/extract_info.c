@@ -30,6 +30,30 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
       break;
     }
     printf("  %s\n", (char *)(pBase + nameOffset));
+
+    DWORD thunk = pImportDesc->OriginalFirstThunk == 0
+                      ? pImportDesc->FirstThunk
+                      : pImportDesc->OriginalFirstThunk;
+    PIMAGE_THUNK_DATA thunkData =
+        (PIMAGE_THUNK_DATA)(pBase + rva_to_offset(pNtHeaders, thunk));
+
+    // DLL exported functions
+    while (thunkData->u1.AddressOfData != 0) {
+      if (thunkData->u1.Ordinal & IMAGE_ORDINAL_FLAG) {
+        // If it's an ordinal import
+        printf("\t\tOrdinal: %08x\n", IMAGE_ORDINAL(thunkData->u1.Ordinal));
+      } else {
+        // If it's a named import
+        PIMAGE_IMPORT_BY_NAME pImportByName =
+            (PIMAGE_IMPORT_BY_NAME)(pBase +
+                                    rva_to_offset(pNtHeaders,
+                                                  thunkData->u1.AddressOfData));
+        printf("\t\t%s\n", pImportByName->Name);
+      }
+
+      thunkData++;
+    }
+
     pImportDesc++;
   }
 }

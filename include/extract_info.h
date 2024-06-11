@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <capstone/capstone.h>
+#include "disassembly.h"
 
 /* Given pBase and Headers of a PE file,
  * extracts the DLLs imported in the executable
