@@ -23,22 +23,22 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 $(TARGET): $(OBJECTS)
 	@echo "Linking..."
 	@if not exist $(BINDIR) mkdir $(BINDIR)
-	@echo "$(CC) $^ -o $(TARGET) -L lib/ -lcapstone -limagehlp"
-	$(CC) $^ -o $(TARGET) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp
+	@echo "$(CC) $^ -o $(TARGET) -L lib/ -limagehlp"
+	$(CC) $^ -o $(TARGET) -I include/ -L lib/ -limagehlp
 
 # Build object files from root directory
 $(BUILDDIR)/%.o: $(ROOTDIR)/%.c
 	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
-	@echo "$(CC) $(CFLAGS) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp -c -o $(TARGET)"
-	$(CC) $(CFLAGS) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp -c -o $@ $^
+	@echo "$(CC) $(CFLAGS) -I include/ -L lib/ -limagehlp -c -o $(TARGET)"
+	$(CC) $(CFLAGS) -I include/ -L lib/ -limagehlp -c -o $@ $^
 
 # Build object files from src directory
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@echo "Building..."
 	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
-	@echo "$(CC) $(CFLAGS) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp -c -o $(TARGET)"
-	$(CC) $(CFLAGS) -I include/ -I include/capstone -L lib/ -lcapstone -limagehlp -c -o $@ $^
+	@echo "$(CC) $(CFLAGS) -I include/ -L lib/ -limagehlp -c -o $(TARGET)"
+	$(CC) $(CFLAGS) -I include/ -L lib/ -limagehlp -c -o $@ $^
 
 # Clean build files
 clean:
