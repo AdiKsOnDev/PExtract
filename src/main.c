@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
         break;
     }
 
-  analyze_pe_file(options.input);
+  analyze_pe_file(options.input, options.verbose);
   return 0;
 }
 

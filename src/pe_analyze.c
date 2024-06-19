@@ -1,6 +1,7 @@
 #include "../include/pe_analyze.h"
+#include "../include/disassembly.h"
 
-void analyze_pe_file(char *pe_path) {
+void analyze_pe_file(char *pe_path, int verbose) {
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -42,18 +43,23 @@ void analyze_pe_file(char *pe_path) {
     return;
   }
 
-  printf("Optional Header Magic: 0x%04x\n", pNtHeaders->OptionalHeader.Magic);
-  printf("Number of Data Directories: %d\n",
-         pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
-  printf("Import Directory RVA: 0x%08x\n",
-         pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
-             .VirtualAddress);
-  printf("Import Directory Size: 0x%08x\n",
-         pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
-             .Size);
+  if (verbose == 1) {
+    printf("Optional Header Magic: 0x%04x\n", pNtHeaders->OptionalHeader.Magic);
+    printf("Number of Data Directories: %d\n",
+           pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
+    printf("Import Directory RVA: 0x%08x\n",
+           pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
+               .VirtualAddress);
+    printf("Import Directory Size: 0x%08x\n",
+           pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
+               .Size);
+  }
 
   extract_imported_dlls((PBYTE)pBase, pNtHeaders);
-  extract_pe_system_info(pNtHeaders);
+
+  if (verbose == 1) {
+    extract_pe_system_info(pNtHeaders);
+  }
 
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
