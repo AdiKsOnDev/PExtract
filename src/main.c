@@ -7,8 +7,6 @@
 
 #define OPTSTR "vi:vd:o:h"
 #define USAGE_FMT "%s [-v] [-d directoryPath] [-i inputfile] [-o outputfile] [-h]\n"
-#define CHECK_FOPEN_INPUT  "fopen(input, r)"
-#define CHECK_FOPEN_OUTPUT "fopen(output, w)"
 
 extern char *optarg;
 extern int opterr, optind;
