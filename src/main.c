@@ -5,8 +5,8 @@
 #include <libgen.h>
 #include <stdio.h>
 
-#define OPTSTR "vi:o:h"
-#define USAGE_FMT "%s [-v] [ -i inputfile] [-o outputfile] [-h]\n"
+#define OPTSTR "vi:vd:o:h"
+#define USAGE_FMT "%s [-v] [-d directoryPath] [-i inputfile] [-o outputfile] [-h]\n"
 #define CHECK_FOPEN_INPUT  "fopen(input, r)"
 #define CHECK_FOPEN_OUTPUT "fopen(output, w)"
 
@@ -15,6 +15,7 @@ extern int opterr, optind;
 
 typedef struct {
   int     verbose;
+  int     directory;
   char   *input;
   char   *output;
 } options_t;
@@ -30,12 +31,17 @@ int main(int argc, char *argv[]) {
   }
 
   int opt;
-  options_t options = {0, "", ""};
+  options_t options = {0, 0, "", ""};
 
   opterr = 0;
 
   while ((opt = getopt(argc, argv, OPTSTR)) != EOF)
     switch (opt) {
+      case 'd':
+        options.input = optarg;
+        options.directory = 1;
+        break;
+
       case 'i':
         options.input = optarg;
         break;
@@ -53,6 +59,12 @@ int main(int argc, char *argv[]) {
         usage(basename(argv[0]), opt);
         break;
     }
+
+  if (options.directory == 1) {
+    listFiles(options.input);
+
+    return 0;
+  }
 
   analyze_pe_file(options.input, options.verbose);
   return 0;

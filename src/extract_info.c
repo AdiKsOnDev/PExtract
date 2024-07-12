@@ -72,3 +72,26 @@ void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders) {
          pNtHeaders->OptionalHeader.MinorSubsystemVersion);
   printf("  Subsystem: %d\n", pNtHeaders->OptionalHeader.Subsystem);
 }
+
+void listFiles(const char *directory) {
+  WIN32_FIND_DATA findFileData;
+  HANDLE hFind = INVALID_HANDLE_VALUE;
+  char searchPath[MAX_PATH_LENGTH];
+
+  snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
+  hFind = FindFirstFile(searchPath, &findFileData);
+
+  if (hFind == INVALID_HANDLE_VALUE) {
+    printf("Invalid file handle. Error is %u\n", GetLastError());
+    return;
+  } else {
+    do {
+      if (!(findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+        char filePath[MAX_PATH_LENGTH];
+        snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+                 findFileData.cFileName);
+      }
+    } while (FindNextFile(hFind, &findFileData) != 0);
+    FindClose(hFind);
+  }
+}
