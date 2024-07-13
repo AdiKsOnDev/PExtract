@@ -1,4 +1,5 @@
 #include "../include/extract_info.h"
+#include "../include/pe_analyze.h"
 
 void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
   DWORD importDirectoryRVA =
@@ -73,7 +74,7 @@ void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders) {
   printf("  Subsystem: %d\n", pNtHeaders->OptionalHeader.Subsystem);
 }
 
-void listFiles(const char *directory) {
+void listFiles(int verbose, const char *directory) {
   WIN32_FIND_DATA findFileData;
   HANDLE hFind = INVALID_HANDLE_VALUE;
   char searchPath[MAX_PATH_LENGTH];
@@ -83,15 +84,29 @@ void listFiles(const char *directory) {
 
   if (hFind == INVALID_HANDLE_VALUE) {
     printf("Invalid file handle. Error is %u\n", GetLastError());
+    printf("Make sure the directory path is correct and you have the necessary "
+           "permissions.\n");
     return;
   } else {
+    printf("Listing files in directory: %s\n", directory);
     do {
-      if (!(findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-        char filePath[MAX_PATH_LENGTH];
-        snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
-                 findFileData.cFileName);
+      if (verbose == 1) {
+        printf("Found: %s\n", findFileData.cFileName);
+        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+          printf("Skipping directory: %s\n", findFileData.cFileName);
+          continue;
+        }
       }
+
+      char filePath[MAX_PATH_LENGTH];
+      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+               findFileData.cFileName);
+
+      analyze_pe_file(filePath, verbose);
     } while (FindNextFile(hFind, &findFileData) != 0);
+    if (GetLastError() != ERROR_NO_MORE_FILES) {
+      printf("FindNextFile error. Error is %u\n", GetLastError());
+    }
     FindClose(hFind);
   }
 }

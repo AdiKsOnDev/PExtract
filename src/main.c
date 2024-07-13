@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     }
 
   if (options.directory == 1) {
-    listFiles(options.input);
+    listFiles(options.verbose, options.input);
 
     return 0;
   }

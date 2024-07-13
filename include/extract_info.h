@@ -29,9 +29,10 @@ void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders);
  * in it.
  * -------------------------------------------
  *  param: directory, String containing the path to a directory
+ *  param: verbose, Pass 1 if verbose mode is needed
  *
  *  return: void
  */
-void listFiles(const char* directory);
+void listFiles(int verbose, const char* directory);
 
 #endif // !EXTRACT_FUNCTIONS
