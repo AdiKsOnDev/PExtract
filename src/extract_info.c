@@ -1,6 +1,31 @@
 #include "../include/extract_info.h"
 #include "../include/pe_analyze.h"
 
+
+void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
+  printf("e_magic:    %d\n", pDosHeader->e_magic);
+  printf("e_cblp:     %d\n", pDosHeader->e_cblp);
+  printf("e_cp:       %d\n", pDosHeader->e_cp);
+  printf("e_crlc:     %d\n", pDosHeader->e_crlc);
+  printf("e_cparhdr:  %d\n", pDosHeader->e_cparhdr);
+  printf("e_minalloc: %d\n", pDosHeader->e_minalloc);
+  printf("e_maxalloc: %d\n", pDosHeader->e_maxalloc);
+  printf("e_ss:       %d\n", pDosHeader->e_ss);
+  printf("e_sp:       %d\n", pDosHeader->e_sp);
+  printf("e_csum:     %d\n", pDosHeader->e_csum);
+  printf("e_ip:       %d\n", pDosHeader->e_ip);
+  printf("e_cs:       %d\n", pDosHeader->e_cs);
+  printf("e_lfarlc:   %d\n", pDosHeader->e_lfarlc);
+  printf("e_ovno:     %d\n", pDosHeader->e_ovno);
+  printf("e_res:      %d\n", pDosHeader->e_res);
+  printf("e_oemid:    %d\n", pDosHeader->e_oemid);
+  printf("e_oeminfo:  %d\n", pDosHeader->e_oeminfo);
+  printf("e_res2:     %d\n", pDosHeader->e_res2);
+  printf("e_lfanew:   %d\n", pDosHeader->e_lfanew);
+
+  return;
+}
+
 void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
   DWORD importDirectoryRVA =
       pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]

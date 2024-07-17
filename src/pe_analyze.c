@@ -33,6 +33,8 @@ void analyze_pe_file(char *pe_path, int verbose) {
     return;
   }
 
+  extract_DOS_header_info(pDosHeader);
+
   PIMAGE_NT_HEADERS pNtHeaders =
       (PIMAGE_NT_HEADERS)((DWORD_PTR)pBase + pDosHeader->e_lfanew);
   if (pNtHeaders->Signature != IMAGE_NT_SIGNATURE) {
