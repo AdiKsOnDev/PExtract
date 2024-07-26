@@ -1,8 +1,38 @@
 #include "../include/extract_info.h"
 #include "../include/pe_analyze.h"
 
+void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file) {
+  if (output_file != "") {
+    char values[19][16];
+    sprintf(values[0], "%d", pDosHeader->e_magic);
+    sprintf(values[1], "%d", pDosHeader->e_cblp);
+    sprintf(values[2], "%d", pDosHeader->e_cp);
+    sprintf(values[3], "%d", pDosHeader->e_crlc);
+    sprintf(values[4], "%d", pDosHeader->e_cparhdr);
+    sprintf(values[5], "%d", pDosHeader->e_minalloc);
+    sprintf(values[6], "%d", pDosHeader->e_maxalloc);
+    sprintf(values[7], "%d", pDosHeader->e_ss);
+    sprintf(values[8], "%d", pDosHeader->e_sp);
+    sprintf(values[9], "%d", pDosHeader->e_csum);
+    sprintf(values[10], "%d", pDosHeader->e_ip);
+    sprintf(values[11], "%d", pDosHeader->e_cs);
+    sprintf(values[12], "%d", pDosHeader->e_lfarlc);
+    sprintf(values[13], "%d", pDosHeader->e_ovno);
+    sprintf(values[14], "%d", pDosHeader->e_res);
+    sprintf(values[15], "%d", pDosHeader->e_oemid);
+    sprintf(values[16], "%d", pDosHeader->e_oeminfo);
+    sprintf(values[17], "%d", pDosHeader->e_res2);
+    sprintf(values[18], "%d", pDosHeader->e_lfanew);
 
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
+    const char *rows[20][2];
+    for (int i = 0; i < 19; i++) {
+      rows[i + 1][0] = data[i];
+      rows[i + 1][1] = values[i];
+    }
+
+    write_csv("extracted_DOS_header.csv", (const char **)rows, 20, 2);
+  }
+
   printf("e_magic:    %d\n", pDosHeader->e_magic);
   printf("e_cblp:     %d\n", pDosHeader->e_cblp);
   printf("e_cp:       %d\n", pDosHeader->e_cp);

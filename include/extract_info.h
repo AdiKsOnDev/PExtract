@@ -10,8 +10,11 @@
  * extracts all the info from PIMAGE_DOS_HEADER structure
  * -------------------------------------------
  * param: pDosHeader, DOS Header of a PE file 
+ * param: *output_file, Pass an empty string if no output file is needed 
+ *
+ * return: void
  */
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
+void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file);
 
 /* Given pBase and Headers of a PE file,
  * extracts the DLLs imported in the executable
