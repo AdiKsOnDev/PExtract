@@ -35,14 +35,4 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
  */ 
 void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders); 
 
-/* Given a path to directory, return a list of all files 
- * in it.
- * -------------------------------------------
- *  param: directory, String containing the path to a directory
- *  param: verbose, Pass 1 if verbose mode is needed
- *
- *  return: void
- */
-void listFiles(int verbose, const char* directory);
-
 #endif // !EXTRACT_FUNCTIONS

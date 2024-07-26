@@ -16,4 +16,15 @@
  * return: void
  */
 void write_csv(const char *filename, const char **data, int rows, int cols);
+
+/* Given a path to directory, return a list of all files 
+ * in it.
+ * -------------------------------------------
+ *  param: directory, String containing the path to a directory
+ *  param: verbose, Pass 1 if verbose mode is needed
+ *
+ *  return: void
+ */
+void listFiles(int verbose, const char* directory);
+
 #endif // !UTILS
