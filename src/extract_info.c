@@ -1,9 +1,16 @@
 #include "../include/extract_info.h"
 #include "../include/pe_analyze.h"
+#include <string.h>
 
 void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file) {
-  if (output_file != "") {
+  if (strcmp(output_file, "") != 0) {
+    const char *fields[] = {"e_magic",   "e_cblp",     "e_cp",       "e_crlc",
+                            "e_cparhdr", "e_minalloc", "e_maxalloc", "e_ss",
+                            "e_sp",      "e_csum",     "e_ip",       "e_cs",
+                            "e_lfarlc",  "e_ovno",     "e_res",      "e_oemid",
+                            "e_oeminfo", "e_res2",     "e_lfanew"};
     char values[19][16];
+
     sprintf(values[0], "%d", pDosHeader->e_magic);
     sprintf(values[1], "%d", pDosHeader->e_cblp);
     sprintf(values[2], "%d", pDosHeader->e_cp);
@@ -26,11 +33,11 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file) {
 
     const char *rows[20][2];
     for (int i = 0; i < 19; i++) {
-      rows[i + 1][0] = data[i];
+      rows[i + 1][0] = fields[i];
       rows[i + 1][1] = values[i];
     }
 
-    write_csv("extracted_DOS_header.csv", (const char **)rows, 20, 2);
+    write_csv(output_file, (const char **)rows, 20, 2);
   }
 
   printf("e_magic:    %d\n", pDosHeader->e_magic);
@@ -128,4 +135,3 @@ void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders) {
          pNtHeaders->OptionalHeader.MinorSubsystemVersion);
   printf("  Subsystem: %d\n", pNtHeaders->OptionalHeader.Subsystem);
 }
-
