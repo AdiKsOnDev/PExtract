@@ -1,7 +1,9 @@
 #ifndef UTILS
 #define UTILS 
 
+#include "pe_analyze.h"
 #include <stdio.h>
+#include <windows.h>
 
 /* Function to write data from the given 
  * 1D array into a csv as if it was a 2D array
@@ -25,6 +27,6 @@ void write_csv(const char *filename, const char **data, int rows, int cols);
  *
  *  return: void
  */
-void listFiles(int verbose, const char* directory);
+void listFiles(int verbose, const char* directory, char *output_file);
 
 #endif // !UTILS

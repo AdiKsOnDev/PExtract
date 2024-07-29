@@ -23,7 +23,7 @@ void write_csv(const char *filename, const char **data, int rows, int cols) {
     fclose(file);
 }
 
-void listFiles(int verbose, const char *directory) {
+void listFiles(int verbose, const char *directory, char *output_file) {
   WIN32_FIND_DATA findFileData;
   HANDLE hFind = INVALID_HANDLE_VALUE;
   char searchPath[MAX_PATH_LENGTH];
@@ -51,7 +51,7 @@ void listFiles(int verbose, const char *directory) {
       snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
                findFileData.cFileName);
 
-      analyze_pe_file(filePath, verbose);
+      analyze_pe_file(filePath, verbose, output_file);
     } while (FindNextFile(hFind, &findFileData) != 0);
     if (GetLastError() != ERROR_NO_MORE_FILES) {
       printf("FindNextFile error. Error is %u\n", GetLastError());

@@ -1,4 +1,5 @@
 #include "../include/pe_analyze.h"
+#include "../include/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <getopt.h>
@@ -59,12 +60,12 @@ int main(int argc, char *argv[]) {
     }
 
   if (options.directory == 1) {
-    listFiles(options.verbose, options.input);
+    listFiles(options.verbose, options.input, options.output);
 
     return 0;
   }
 
-  analyze_pe_file(options.input, options.verbose);
+  analyze_pe_file(options.input, options.verbose, options.output);
   return 0;
 }
 
