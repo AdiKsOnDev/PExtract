@@ -1,43 +1,52 @@
 #include "../include/extract_info.h"
 #include "../include/pe_analyze.h"
+#include <stdio.h>
 #include <string.h>
 
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file) {
+void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file,
+                             char *pe_file_name) {
   if (strcmp(output_file, "") != 0) {
-    const char *fields[] = {"e_magic",   "e_cblp",     "e_cp",       "e_crlc",
-                            "e_cparhdr", "e_minalloc", "e_maxalloc", "e_ss",
-                            "e_sp",      "e_csum",     "e_ip",       "e_cs",
-                            "e_lfarlc",  "e_ovno",     "e_res",      "e_oemid",
-                            "e_oeminfo", "e_res2",     "e_lfanew"};
-    char values[19][16];
+    FILE *file = fopen(output_file, "a");
+    char *values[20];
 
-    sprintf(values[0], "%d", pDosHeader->e_magic);
-    sprintf(values[1], "%d", pDosHeader->e_cblp);
-    sprintf(values[2], "%d", pDosHeader->e_cp);
-    sprintf(values[3], "%d", pDosHeader->e_crlc);
-    sprintf(values[4], "%d", pDosHeader->e_cparhdr);
-    sprintf(values[5], "%d", pDosHeader->e_minalloc);
-    sprintf(values[6], "%d", pDosHeader->e_maxalloc);
-    sprintf(values[7], "%d", pDosHeader->e_ss);
-    sprintf(values[8], "%d", pDosHeader->e_sp);
-    sprintf(values[9], "%d", pDosHeader->e_csum);
-    sprintf(values[10], "%d", pDosHeader->e_ip);
-    sprintf(values[11], "%d", pDosHeader->e_cs);
-    sprintf(values[12], "%d", pDosHeader->e_lfarlc);
-    sprintf(values[13], "%d", pDosHeader->e_ovno);
-    sprintf(values[14], "%d", pDosHeader->e_res);
-    sprintf(values[15], "%d", pDosHeader->e_oemid);
-    sprintf(values[16], "%d", pDosHeader->e_oeminfo);
-    sprintf(values[17], "%d", pDosHeader->e_res2);
-    sprintf(values[18], "%d", pDosHeader->e_lfanew);
+    values[0] = pe_file_name;
 
-    const char *rows[20][2];
-    for (int i = 0; i < 19; i++) {
-      rows[i + 1][0] = fields[i];
-      rows[i + 1][1] = values[i];
+    sprintf(values[1], "%d", pDosHeader->e_magic);
+    sprintf(values[2], "%d", pDosHeader->e_cblp);
+    sprintf(values[3], "%d", pDosHeader->e_cp);
+    sprintf(values[4], "%d", pDosHeader->e_crlc);
+    sprintf(values[5], "%d", pDosHeader->e_cparhdr);
+    sprintf(values[6], "%d", pDosHeader->e_minalloc);
+    sprintf(values[7], "%d", pDosHeader->e_maxalloc);
+    sprintf(values[8], "%d", pDosHeader->e_ss);
+    sprintf(values[9], "%d", pDosHeader->e_sp);
+    sprintf(values[10], "%d", pDosHeader->e_csum);
+    sprintf(values[11], "%d", pDosHeader->e_ip);
+    sprintf(values[12], "%d", pDosHeader->e_cs);
+    sprintf(values[13], "%d", pDosHeader->e_lfarlc);
+    sprintf(values[14], "%d", pDosHeader->e_ovno);
+    sprintf(values[15], "%d", pDosHeader->e_res);
+    sprintf(values[16], "%d", pDosHeader->e_oemid);
+    sprintf(values[17], "%d", pDosHeader->e_oeminfo);
+    sprintf(values[18], "%d", pDosHeader->e_res2);
+    sprintf(values[19], "%d", pDosHeader->e_lfanew);
+
+    if (file == NULL) {
+      perror("Error opening file");
+
+      return;
     }
 
-    write_csv(output_file, (const char **)rows, 20, 2);
+    for (int index = 0; index < 20; index++) {
+      fprintf(file, "%s", values[index]);
+
+      if (index < 19) {
+        fprintf(file, ",");
+      }
+    }
+    fprintf(file, "\n");
+
+    fclose(file);
   }
 
   printf("e_magic:    %d\n", pDosHeader->e_magic);
