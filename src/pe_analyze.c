@@ -1,7 +1,7 @@
 #include "../include/pe_analyze.h"
 #include "../include/disassembly.h"
 
-void analyze_pe_file(char *pe_path, int verbose, char *output_file) {
+void analyze_pe_file(char *pe_path, int verbose) {
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -33,7 +33,7 @@ void analyze_pe_file(char *pe_path, int verbose, char *output_file) {
     return;
   }
 
-  extract_DOS_header_info(pDosHeader, output_file, pe_path);
+  extract_DOS_header_info(pDosHeader);
 
   PIMAGE_NT_HEADERS pNtHeaders =
       (PIMAGE_NT_HEADERS)((DWORD_PTR)pBase + pDosHeader->e_lfanew);

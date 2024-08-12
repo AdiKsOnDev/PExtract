@@ -1,54 +1,8 @@
 #include "../include/extract_info.h"
 #include "../include/pe_analyze.h"
-#include <stdio.h>
-#include <string.h>
 
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader, char *output_file,
-                             char *pe_file_name) {
-  if (strcmp(output_file, "") != 0) {
-    FILE *file = fopen(output_file, "a");
-    char *values[20];
 
-    values[0] = pe_file_name;
-
-    sprintf(values[1], "%d", pDosHeader->e_magic);
-    sprintf(values[2], "%d", pDosHeader->e_cblp);
-    sprintf(values[3], "%d", pDosHeader->e_cp);
-    sprintf(values[4], "%d", pDosHeader->e_crlc);
-    sprintf(values[5], "%d", pDosHeader->e_cparhdr);
-    sprintf(values[6], "%d", pDosHeader->e_minalloc);
-    sprintf(values[7], "%d", pDosHeader->e_maxalloc);
-    sprintf(values[8], "%d", pDosHeader->e_ss);
-    sprintf(values[9], "%d", pDosHeader->e_sp);
-    sprintf(values[10], "%d", pDosHeader->e_csum);
-    sprintf(values[11], "%d", pDosHeader->e_ip);
-    sprintf(values[12], "%d", pDosHeader->e_cs);
-    sprintf(values[13], "%d", pDosHeader->e_lfarlc);
-    sprintf(values[14], "%d", pDosHeader->e_ovno);
-    sprintf(values[15], "%d", pDosHeader->e_res);
-    sprintf(values[16], "%d", pDosHeader->e_oemid);
-    sprintf(values[17], "%d", pDosHeader->e_oeminfo);
-    sprintf(values[18], "%d", pDosHeader->e_res2);
-    sprintf(values[19], "%d", pDosHeader->e_lfanew);
-
-    if (file == NULL) {
-      perror("Error opening file");
-
-      return;
-    }
-
-    for (int index = 0; index < 20; index++) {
-      fprintf(file, "%s", values[index]);
-
-      if (index < 19) {
-        fprintf(file, ",");
-      }
-    }
-    fprintf(file, "\n");
-
-    fclose(file);
-  }
-
+void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
   printf("e_magic:    %d\n", pDosHeader->e_magic);
   printf("e_cblp:     %d\n", pDosHeader->e_cblp);
   printf("e_cp:       %d\n", pDosHeader->e_cp);
@@ -143,4 +97,41 @@ void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders) {
          pNtHeaders->OptionalHeader.MajorSubsystemVersion,
          pNtHeaders->OptionalHeader.MinorSubsystemVersion);
   printf("  Subsystem: %d\n", pNtHeaders->OptionalHeader.Subsystem);
+}
+
+void listFiles(int verbose, const char *directory) {
+  WIN32_FIND_DATA findFileData;
+  HANDLE hFind = INVALID_HANDLE_VALUE;
+  char searchPath[MAX_PATH_LENGTH];
+
+  snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
+  hFind = FindFirstFile(searchPath, &findFileData);
+
+  if (hFind == INVALID_HANDLE_VALUE) {
+    printf("Invalid file handle. Error is %u\n", GetLastError());
+    printf("Make sure the directory path is correct and you have the necessary "
+           "permissions.\n");
+    return;
+  } else {
+    printf("Listing files in directory: %s\n", directory);
+    do {
+      if (verbose == 1) {
+        printf("Found: %s\n", findFileData.cFileName);
+        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+          printf("Skipping directory: %s\n", findFileData.cFileName);
+          continue;
+        }
+      }
+
+      char filePath[MAX_PATH_LENGTH];
+      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+               findFileData.cFileName);
+
+      analyze_pe_file(filePath, verbose);
+    } while (FindNextFile(hFind, &findFileData) != 0);
+    if (GetLastError() != ERROR_NO_MORE_FILES) {
+      printf("FindNextFile error. Error is %u\n", GetLastError());
+    }
+    FindClose(hFind);
+  }
 }
