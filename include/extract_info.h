@@ -24,13 +24,13 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
 void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
 
 /* Given the Headers of a PE file, extracts and prints out
- * crucial system information, such as OS, Subsystem, etc.
+ * OptionalHeader fields
  * -------------------------------------------
  * param: pNtHeaders, NT Headers of a PE file
  *
  * return: void
  */ 
-void extract_pe_system_info(PIMAGE_NT_HEADERS pNtHeaders); 
+void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders); 
 
 /* Given a path to directory, return a list of all files 
  * in it.
