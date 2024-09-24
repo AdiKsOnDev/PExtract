@@ -10,18 +10,17 @@ BINDIR := bin
 INCDIR := include
 LIBDIR := lib
 
-OBJECTS := $(wildcard build/*.o)
+OBJECTS := $(wildcard $(BUILDDIR)/*.o)
 
 # Default target
 bin/pextract.exe: $(OBJECTS)
-	$(CC) $(CFLAGS) $^ -o $(TARGET) -limagehlp
+	$(CC) $(CFLAGS) $^ -o $@ -L $(LIBDIR) -limagehlp
 
 # Build object files from src directory
-build/%.o: src/%.c
-	$(CC) $(CFLAGS) -I include/ -L lib/ -limagehlp -c -o $@ $^
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -I $(INCDIR) -c -o $@ $<
 
 # Clean build files
 clean:
 	@echo "Cleaning..."
-	@echo "$(RM) -r build/ bin/pextract.exe"
-	$(RM) -r build/ bin/pextract.exe
+	$(RM) -r $(BUILDDIR) bin/pextract.exe
