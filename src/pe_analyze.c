@@ -45,18 +45,6 @@ void analyze_pe_file(char *pe_path, int verbose) {
     return;
   }
 
-  if (verbose == 1) {
-    printf("Optional Header Magic: 0x%04x\n", pNtHeaders->OptionalHeader.Magic);
-    printf("Number of Data Directories: %d\n",
-           pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
-    printf("Import Directory RVA: 0x%08x\n",
-           pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
-               .VirtualAddress);
-    printf("Import Directory Size: 0x%08x\n",
-           pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
-               .Size);
-  }
-
   extract_imported_dlls((PBYTE)pBase, pNtHeaders);
 
   if (verbose == 1) {
