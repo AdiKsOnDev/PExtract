@@ -48,7 +48,7 @@ void analyze_pe_file(char *pe_path, int verbose) {
   extract_imported_dlls((PBYTE)pBase, pNtHeaders);
 
   if (verbose == 1) {
-    extract_pe_system_info(pNtHeaders);
+    extract_optional_headers(pNtHeaders);
   }
 
   UnmapViewOfFile(pBase);
