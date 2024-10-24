@@ -150,7 +150,7 @@ void listFiles(int verbose, const char *directory) {
   hFind = FindFirstFile(searchPath, &findFileData);
 
   if (hFind == INVALID_HANDLE_VALUE) {
-    printf("Invalid file handle.));
+    printf("Invalid file handle.");
     printf("Make sure the directory path is correct and you have the necessary "
            "permissions.\n");
 
