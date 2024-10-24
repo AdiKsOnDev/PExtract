@@ -10,11 +10,14 @@ BINDIR := bin
 INCDIR := include
 LIBDIR := lib
 
-OBJECTS := $(wildcard $(BUILDDIR)/*.o)
+# Source and Object Files
+SOURCES := $(wildcard $(SRCDIR)/*.c)
+OBJECTS := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
 # Default target
 bin/pextract.exe: $(OBJECTS)
-	$(CC) $(CFLAGS) $^ -o $@ -L $(LIBDIR) -limagehlp
+	@echo "Hii $(OBJECTS)"
+	$(CC) $(CFLAGS) $^ -o $@ -L $(LIBDIR) 
 
 # Build object files from src directory
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
