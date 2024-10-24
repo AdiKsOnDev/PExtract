@@ -2,18 +2,18 @@
 #define EXTRACT_FUNCTIONS
 #define MAX_PATH_LENGTH 260
 
-#include <windows.h>
-#include <stdio.h>
 #include "disassembly.h"
+#include <stdio.h>
+#include <windows.h>
 
-/* Given the DOS Header of a PE file, 
+/* Given the DOS Header of a PE file,
  * extracts all the info from PIMAGE_DOS_HEADER structure
  * -------------------------------------------
- * param: pDosHeader, DOS Header of a PE file 
+ * param: pDosHeader, DOS Header of a PE file
  */
 void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
 
-/* Given pBase and Headers of a PE file,
+/* Given pBase and NT Headers of a PE file,
  * extracts the DLLs imported in the executable
  * -------------------------------------------
  * param: pBase,
@@ -23,16 +23,29 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
  */
 void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
 
+/* Given DOS and NT Headers of a PE file,
+ * extracts the section names used in the executable
+ * -------------------------------------------
+ * param: pDosHeader, DOS Header of a PE file
+ * param: pNtHeaders, NT Headers of a PE file
+ * param: file, Pointer to the executable file
+ *
+ * return: void
+ */
+void extract_section_names(PIMAGE_DOS_HEADERS pDosHeader,
+                           PIMAGE_NT_HEADERS pNtHeaders, 
+                           FILE *file);
+
 /* Given the Headers of a PE file, extracts and prints out
  * OptionalHeader fields
  * -------------------------------------------
  * param: pNtHeaders, NT Headers of a PE file
  *
  * return: void
- */ 
-void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders); 
+ */
+void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
 
-/* Given a path to directory, return a list of all files 
+/* Given a path to directory, return a list of all files
  * in it.
  * -------------------------------------------
  *  param: directory, String containing the path to a directory
@@ -40,6 +53,6 @@ void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
  *
  *  return: void
  */
-void listFiles(int verbose, const char* directory);
+void listFiles(int verbose, const char *directory);
 
 #endif // !EXTRACT_FUNCTIONS
