@@ -4,6 +4,8 @@
 void analyze_pe_file(char *pe_path, int verbose) {
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+  FILE *file = fopen(pe_path, "rb");
+
   if (hFile == INVALID_HANDLE_VALUE) {
     printf("Failed to open file.\n");
     return;
@@ -46,10 +48,8 @@ void analyze_pe_file(char *pe_path, int verbose) {
   }
 
   extract_imported_dlls((PBYTE)pBase, pNtHeaders);
-
-  if (verbose == 1) {
-    extract_optional_headers(pNtHeaders);
-  }
+  extract_section_names(pDosHeader, pNtHeaders, file)
+  extract_optional_headers(pNtHeaders);
 
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
