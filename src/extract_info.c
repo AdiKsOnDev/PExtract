@@ -26,14 +26,14 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
   return;
 }
 
-void extract_section_names(int pDosHeader, int pNtHeaders, FILE *file) {
+void extract_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHeaders, FILE *file) {
   // Move to the section headers
   IMAGE_SECTION_HEADER sectionHeader;
-  fseek(file, pDosHeader.e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
+  fseek(file, pDosHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
 
   // Loop through each section and print its name
   printf("Section Names");
-  for (int i = 0; i < ntHeaders.FileHeader.NumberOfSections; i++) {
+  for (int i = 0; i < pNtHeaders->FileHeader.NumberOfSections; i++) {
     fread(&sectionHeader, sizeof(IMAGE_SECTION_HEADER), 1, file);
     printf("Section %d: %.8s\n", i + 1, sectionHeader.Name);
   }
