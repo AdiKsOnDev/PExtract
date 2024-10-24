@@ -32,6 +32,7 @@ void extract_section_names(int pDosHeader, int pNtHeaders, FILE *file) {
   fseek(file, pDosHeader.e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
 
   // Loop through each section and print its name
+  printf("Section Names");
   for (int i = 0; i < ntHeaders.FileHeader.NumberOfSections; i++) {
     fread(&sectionHeader, sizeof(IMAGE_SECTION_HEADER), 1, file);
     printf("Section %d: %.8s\n", i + 1, sectionHeader.Name);

@@ -48,7 +48,7 @@ void analyze_pe_file(char *pe_path, int verbose) {
   }
 
   extract_imported_dlls((PBYTE)pBase, pNtHeaders);
-  extract_section_names(pDosHeader, pNtHeaders, file)
+  extract_section_names(pDosHeader, pNtHeaders, file);
   extract_optional_headers(pNtHeaders);
 
   UnmapViewOfFile(pBase);
