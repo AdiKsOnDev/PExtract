@@ -94,62 +94,62 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
 
 // Optional Headers extraction, check the header file for documentation
 void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
-  printf("Magic: 0x%x\n", pNtHeaders->OptionalHeader.Magic);
-  printf("Major Linker Version: %d\n",
-         pNtHeaders->OptionalHeader.MajorLinkerVersion);
-  printf("Minor Linker Version: %d\n",
-         pNtHeaders->OptionalHeader.MinorLinkerVersion);
-  printf("Size of Code: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfCode);
-  printf("Size of Initialized Data: 0x%x\n",
-         pNtHeaders->OptionalHeader.SizeOfInitializedData);
-  printf("Size of Uninitialized Data: 0x%x\n",
-         pNtHeaders->OptionalHeader.SizeOfUninitializedData);
-  printf("Address of Entry Point: 0x%x\n",
-         pNtHeaders->OptionalHeader.AddressOfEntryPoint);
-  printf("Base of Code: 0x%x\n", pNtHeaders->OptionalHeader.BaseOfCode);
-
-  if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
-    // Print BaseOfData for PE32 only
-    printf("Base of Data: 0x%x\n", pNtHeaders->OptionalHeader.BaseOfData);
-  }
-
-  printf("Image Base: 0x%llx\n",
-         pNtHeaders->OptionalHeader
-             .ImageBase); // 64-bit for PE32+ or 32-bit for PE32
-  printf("Section Alignment: 0x%x\n",
-         pNtHeaders->OptionalHeader.SectionAlignment);
-  printf("File Alignment: 0x%x\n", pNtHeaders->OptionalHeader.FileAlignment);
-  printf("Major OS Version: %d\n",
-         pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
-  printf("Minor OS Version: %d\n",
-         pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
-  printf("Major Image Version: %d\n",
-         pNtHeaders->OptionalHeader.MajorImageVersion);
-  printf("Minor Image Version: %d\n",
-         pNtHeaders->OptionalHeader.MinorImageVersion);
-  printf("Major Subsystem Version: %d\n",
-         pNtHeaders->OptionalHeader.MajorSubsystemVersion);
-  printf("Minor Subsystem Version: %d\n",
-         pNtHeaders->OptionalHeader.MinorSubsystemVersion);
-  printf("Win32 Version Value: 0x%x\n",
-         pNtHeaders->OptionalHeader.Win32VersionValue); // Should be 0
-  printf("Size of Image: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfImage);
-  printf("Size of Headers: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfHeaders);
-  printf("Checksum: 0x%x\n", pNtHeaders->OptionalHeader.CheckSum);
-  printf("Subsystem: 0x%x\n", pNtHeaders->OptionalHeader.Subsystem);
-  printf("DLL Characteristics: 0x%x\n",
-         pNtHeaders->OptionalHeader.DllCharacteristics);
-  printf("Size of Stack Reserve: 0x%llx\n",
-         pNtHeaders->OptionalHeader.SizeOfStackReserve); // 64-bit for PE32+
-  printf("Size of Stack Commit: 0x%llx\n",
-         pNtHeaders->OptionalHeader.SizeOfStackCommit); // 64-bit for PE32+
-  printf("Size of Heap Reserve: 0x%llx\n",
-         pNtHeaders->OptionalHeader.SizeOfHeapReserve); // 64-bit for PE32+
-  printf("Size of Heap Commit: 0x%llx\n",
-         pNtHeaders->OptionalHeader.SizeOfHeapCommit); // 64-bit for PE32+
-  printf("Loader Flags: 0x%x\n", pNtHeaders->OptionalHeader.LoaderFlags);
-  printf("Number of Rva and Sizes: 0x%x\n",
-         pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
+  // printf("Magic: 0x%x\n", pNtHeaders->OptionalHeader.Magic);
+  // printf("Major Linker Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MajorLinkerVersion);
+  // printf("Minor Linker Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MinorLinkerVersion);
+  // printf("Size of Code: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfCode);
+  // printf("Size of Initialized Data: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.SizeOfInitializedData);
+  // printf("Size of Uninitialized Data: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.SizeOfUninitializedData);
+  // printf("Address of Entry Point: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.AddressOfEntryPoint);
+  // printf("Base of Code: 0x%x\n", pNtHeaders->OptionalHeader.BaseOfCode);
+  //
+  // if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
+  //   // Print BaseOfData for PE32 only
+  //   printf("Base of Data: 0x%x\n", pNtHeaders->OptionalHeader.BaseOfData);
+  // }
+  //
+  // printf("Image Base: 0x%llx\n",
+  //        pNtHeaders->OptionalHeader
+  //            .ImageBase); // 64-bit for PE32+ or 32-bit for PE32
+  // printf("Section Alignment: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.SectionAlignment);
+  // printf("File Alignment: 0x%x\n", pNtHeaders->OptionalHeader.FileAlignment);
+  // printf("Major OS Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
+  // printf("Minor OS Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
+  // printf("Major Image Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MajorImageVersion);
+  // printf("Minor Image Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MinorImageVersion);
+  // printf("Major Subsystem Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MajorSubsystemVersion);
+  // printf("Minor Subsystem Version: %d\n",
+  //        pNtHeaders->OptionalHeader.MinorSubsystemVersion);
+  // printf("Win32 Version Value: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.Win32VersionValue); // Should be 0
+  // printf("Size of Image: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfImage);
+  // printf("Size of Headers: 0x%x\n", pNtHeaders->OptionalHeader.SizeOfHeaders);
+  // printf("Checksum: 0x%x\n", pNtHeaders->OptionalHeader.CheckSum);
+  // printf("Subsystem: 0x%x\n", pNtHeaders->OptionalHeader.Subsystem);
+  // printf("DLL Characteristics: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.DllCharacteristics);
+  // printf("Size of Stack Reserve: 0x%llx\n",
+  //        pNtHeaders->OptionalHeader.SizeOfStackReserve); // 64-bit for PE32+
+  // printf("Size of Stack Commit: 0x%llx\n",
+  //        pNtHeaders->OptionalHeader.SizeOfStackCommit); // 64-bit for PE32+
+  // printf("Size of Heap Reserve: 0x%llx\n",
+  //        pNtHeaders->OptionalHeader.SizeOfHeapReserve); // 64-bit for PE32+
+  // printf("Size of Heap Commit: 0x%llx\n",
+  //        pNtHeaders->OptionalHeader.SizeOfHeapCommit); // 64-bit for PE32+
+  // printf("Loader Flags: 0x%x\n", pNtHeaders->OptionalHeader.LoaderFlags);
+  // printf("Number of Rva and Sizes: 0x%x\n",
+  //        pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
 }
 
 // A helper function to list all files in a given directory, check the header
