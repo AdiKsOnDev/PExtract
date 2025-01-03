@@ -62,7 +62,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
       printf("Invalid DLL name address.\n");
       break;
     }
-    printf("  %s\n", (char *)(pBase + nameOffset));
+    printf(" \033[31m%s\033[0m\n", (char *)(pBase + nameOffset));
 
     DWORD thunk = pImportDesc->OriginalFirstThunk == 0
                       ? pImportDesc->FirstThunk
