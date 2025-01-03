@@ -154,37 +154,38 @@ void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
 // A helper function to list all files in a given directory, check the header
 // file for documentation
 void listFiles(int verbose, const char *directory) {
-  WIN32_FIND_DATA findFileData;
-  HANDLE hFind = INVALID_HANDLE_VALUE;
-  char searchPath[MAX_PATH_LENGTH];
+    WIN32_FIND_DATA findFileData;
+    HANDLE hFind = INVALID_HANDLE_VALUE;
+    char searchPath[MAX_PATH_LENGTH];
 
-  snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
-  hFind = FindFirstFile(searchPath, &findFileData);
+    snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
+    hFind = FindFirstFile(searchPath, &findFileData);
 
-  if (hFind == INVALID_HANDLE_VALUE) {
-    printf("\033[31mInvalid file handle.\n\033[0m");
-    printf("Make sure the directory path is correct and you have the necessary "
-           "permissions.\n");
+    if (hFind == INVALID_HANDLE_VALUE) {
+        printf("\033[31mInvalid file handle.\033[0m\n");
+        printf("Make sure the directory path is correct and you have the necessary permissions.\n");
+        return;
+    } else {
+        printf("Listing files in directory: %s\n", directory);
+        do {
+            if (verbose) {
+                printf("Found: %s\n", findFileData.cFileName);
+                if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+                    printf("Skipping directory: %s\n", findFileData.cFileName);
+                    continue;
+                }
+            }
 
-    return;
-  } else {
-    printf("Listing files in directory: %s\n", directory);
-    do {
-      if (verbose == 1) {
-        printf("Found: %s\n", findFileData.cFileName);
-        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-          printf("Skipping directory: %s\n", findFileData.cFileName);
-          continue;
+            char filePath[MAX_PATH_LENGTH];
+            snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory, findFileData.cFileName);
+
+            analyze_pe_file(filePath, verbose);
+        } while (FindNextFile(hFind, &findFileData) != 0);
+
+        if (GetLastError() != ERROR_NO_MORE_FILES) {
+            printf("\033[31mError while iterating through directory.\033[0m\n");
         }
-      }
 
-      char filePath[MAX_PATH_LENGTH];
-      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
-               findFileData.cFileName);
-
-      analyze_pe_file(filePath, verbose);
-    } while (FindNextFile(hFind, &findFileData) != 0);
-
-    FindClose(hFind);
-  }
+        FindClose(hFind);
+    }
 }
