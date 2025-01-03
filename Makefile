@@ -16,7 +16,6 @@ OBJECTS := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
 # Default target
 bin/pextract.exe: $(OBJECTS)
-	@echo "Hii $(OBJECTS)"
 	$(CC) $(CFLAGS) $^ -o $@ -L $(LIBDIR) 
 
 # Build object files from src directory
