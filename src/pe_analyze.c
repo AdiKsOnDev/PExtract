@@ -7,14 +7,14 @@ void analyze_pe_file(char *pe_path, int verbose) {
   FILE *file = fopen(pe_path, "rb");
 
   if (hFile == INVALID_HANDLE_VALUE) {
-    printf("Failed to open file.\n");
+    printf("\033[31mFailed to open file.\n\033[0m");
     return;
   }
 
   HANDLE hMap = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
   if (hMap == NULL) {
     CloseHandle(hFile);
-    printf("Failed to create file mapping.\n");
+    printf("\033[31mFailed to create file mapping.\n\033[0m");
     return;
   }
 
@@ -22,13 +22,13 @@ void analyze_pe_file(char *pe_path, int verbose) {
   if (pBase == NULL) {
     CloseHandle(hMap);
     CloseHandle(hFile);
-    printf("Failed to map view of file.\n");
+    printf("\033[31mFailed to map view of file.\n\033[0m");
     return;
   }
 
   PIMAGE_DOS_HEADER pDosHeader = (PIMAGE_DOS_HEADER)pBase;
   if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE) {
-    printf("Not a valid DOS file.\n");
+    printf("\033[31mNot a valid DOS file.\n\033[0m");
     UnmapViewOfFile(pBase);
     CloseHandle(hMap);
     CloseHandle(hFile);
@@ -40,7 +40,7 @@ void analyze_pe_file(char *pe_path, int verbose) {
   PIMAGE_NT_HEADERS pNtHeaders =
       (PIMAGE_NT_HEADERS)((DWORD_PTR)pBase + pDosHeader->e_lfanew);
   if (pNtHeaders->Signature != IMAGE_NT_SIGNATURE) {
-    printf("Not a valid NT file.\n");
+    printf("\033[31mNot a valid NT file.\n\033[0m");
     UnmapViewOfFile(pBase);
     CloseHandle(hMap);
     CloseHandle(hFile);

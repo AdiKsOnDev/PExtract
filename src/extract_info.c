@@ -3,25 +3,25 @@
 
 // DOS Header extraction, check the header file for documentation
 void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
-  printf("e_magic:    %d\n", pDosHeader->e_magic);
-  printf("e_cblp:     %d\n", pDosHeader->e_cblp);
-  printf("e_cp:       %d\n", pDosHeader->e_cp);
-  printf("e_crlc:     %d\n", pDosHeader->e_crlc);
-  printf("e_cparhdr:  %d\n", pDosHeader->e_cparhdr);
-  printf("e_minalloc: %d\n", pDosHeader->e_minalloc);
-  printf("e_maxalloc: %d\n", pDosHeader->e_maxalloc);
-  printf("e_ss:       %d\n", pDosHeader->e_ss);
-  printf("e_sp:       %d\n", pDosHeader->e_sp);
-  printf("e_csum:     %d\n", pDosHeader->e_csum);
-  printf("e_ip:       %d\n", pDosHeader->e_ip);
-  printf("e_cs:       %d\n", pDosHeader->e_cs);
-  printf("e_lfarlc:   %d\n", pDosHeader->e_lfarlc);
-  printf("e_ovno:     %d\n", pDosHeader->e_ovno);
-  printf("e_res:      %d\n", pDosHeader->e_res);
-  printf("e_oemid:    %d\n", pDosHeader->e_oemid);
-  printf("e_oeminfo:  %d\n", pDosHeader->e_oeminfo);
-  printf("e_res2:     %d\n", pDosHeader->e_res2);
-  printf("e_lfanew:   %d\n", pDosHeader->e_lfanew);
+  printf("\033[34me_magic:\033[0m    %d\n", pDosHeader->e_magic);
+  printf("\033[34me_cblp:\033[0m     %d\n", pDosHeader->e_cblp);
+  printf("\033[34me_cp:\033[0m       %d\n", pDosHeader->e_cp);
+  printf("\033[34me_crlc:\033[0m     %d\n", pDosHeader->e_crlc);
+  printf("\033[34me_cparhdr:\033[0m  %d\n", pDosHeader->e_cparhdr);
+  printf("\033[34me_minalloc:\033[0m %d\n", pDosHeader->e_minalloc);
+  printf("\033[34me_maxalloc:\033[0m %d\n", pDosHeader->e_maxalloc);
+  printf("\033[34me_ss:\033[0m       %d\n", pDosHeader->e_ss);
+  printf("\033[34me_sp:\033[0m       %d\n", pDosHeader->e_sp);
+  printf("\033[34me_csum:\033[0m     %d\n", pDosHeader->e_csum);
+  printf("\033[34me_ip:\033[0m       %d\n", pDosHeader->e_ip);
+  printf("\033[34me_cs:\033[0m       %d\n", pDosHeader->e_cs);
+  printf("\033[34me_lfarlc:\033[0m   %d\n", pDosHeader->e_lfarlc);
+  printf("\033[34me_ovno:\033[0m     %d\n", pDosHeader->e_ovno);
+  printf("\033[34me_res:\033[0m      %d\n", pDosHeader->e_res);
+  printf("\033[34me_oemid:\033[0m    %d\n", pDosHeader->e_oemid);
+  printf("\033[34me_oeminfo:\033[0m  %d\n", pDosHeader->e_oeminfo);
+  printf("\033[34me_res2:\033[0m     %d\n", pDosHeader->e_res2);
+  printf("\033[34me_lfanew:\033[0m   %d\n", pDosHeader->e_lfanew);
 
   return;
 }
@@ -34,7 +34,7 @@ void extract_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHe
   // Loop through each section and print its name
   for (int i = 0; i < pNtHeaders->FileHeader.NumberOfSections; i++) {
     fread(&sectionHeader, sizeof(IMAGE_SECTION_HEADER), 1, file);
-    printf("Section %d: %.8s\n", i + 1, sectionHeader.Name);
+    printf("\033[34mSection %d:\033[0m %.8s\n", i + 1, sectionHeader.Name);
   }
 }
 
@@ -45,7 +45,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
           .VirtualAddress;
 
   if (importDirectoryRVA == 0) {
-    printf("No import directory found.\n");
+    printf("\033[31mNo import directory found.\033[0m\n");
     return;
   }
 
@@ -59,7 +59,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
     DWORD nameOffset = rva_to_offset(pNtHeaders, pImportDesc->Name);
 
     if (nameOffset == 0) {
-      printf("Invalid DLL name address.\n");
+      printf("\033[31mInvalid DLL name address.\033[0m\n");
       break;
     }
     printf(" \033[34m%s\033[0m\n", (char *)(pBase + nameOffset));
@@ -162,7 +162,7 @@ void listFiles(int verbose, const char *directory) {
   hFind = FindFirstFile(searchPath, &findFileData);
 
   if (hFind == INVALID_HANDLE_VALUE) {
-    printf("Invalid file handle.");
+    printf("\033[31mInvalid file handle.\033[0m");
     printf("Make sure the directory path is correct and you have the necessary "
            "permissions.\n");
 

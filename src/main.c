@@ -22,8 +22,8 @@ void usage(char *progname, int opt);
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
-    fprintf(stderr, "pextract: Missing Operand \n");
-    fprintf(stderr, "Try 'pextract -h' for more information");
+    fprintf(stderr, "\033[31mpextract: Missing Operand \n\033[0m");
+    fprintf(stderr, "\033[31mTry 'pextract -h' for more information\033[0m");
 
     exit(EXIT_FAILURE);
   }
