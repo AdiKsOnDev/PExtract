@@ -2,7 +2,7 @@
 #include "../include/disassembly.h"
 
 void analyze_pe_file(char *pe_path, int verbose) {
-  printf("Analysing file --> %s\n", pe_path);
+  printf("\033[32mAnalysing file --> %s\n\033[0m", pe_path);
   printf("==============================================\n");
 
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
