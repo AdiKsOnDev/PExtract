@@ -62,7 +62,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
       printf("Invalid DLL name address.\n");
       break;
     }
-    printf(" \033[31m%s\033[0m\n", (char *)(pBase + nameOffset));
+    printf(" \033[34m%s\033[0m\n", (char *)(pBase + nameOffset));
 
     DWORD thunk = pImportDesc->OriginalFirstThunk == 0
                       ? pImportDesc->FirstThunk
@@ -93,61 +93,61 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
 
 // Optional Headers extraction, check the header file for documentation
 void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
-   printf("\033[31mMagic:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Magic);
-   printf("\033[31mMajor Linker Version:\033[0m %d\n",
+   printf("\033[34mMagic:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Magic);
+   printf("\033[34mMajor Linker Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MajorLinkerVersion);
-   printf("\033[31mMinor Linker Version:\033[0m %d\n",
+   printf("\033[34mMinor Linker Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MinorLinkerVersion);
-   printf("\033[31mSize of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfCode);
-   printf("\033[31mSize of Initialized Data:\033[0m 0x%x\n",
+   printf("\033[34mSize of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfCode);
+   printf("\033[34mSize of Initialized Data:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.SizeOfInitializedData);
-   printf("\033[31mSize of Uninitialized Data:\033[0m 0x%x\n",
+   printf("\033[34mSize of Uninitialized Data:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.SizeOfUninitializedData);
-   printf("\033[31mAddress of Entry Point:\033[0m 0x%x\n",
+   printf("\033[34mAddress of Entry Point:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.AddressOfEntryPoint);
-   printf("\033[31mBase of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfCode);
+   printf("\033[34mBase of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfCode);
   
    if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
      // Print BaseOfData for PE32 only
-     printf("\033[31mBase of Data:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfData);
+     printf("\033[34mBase of Data:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfData);
    }
   
-   printf("\033[31mImage Base:\033[0m 0x%llx\n",
+   printf("\033[34mImage Base:\033[0m 0x%llx\n",
           pNtHeaders->OptionalHeader
               .ImageBase); // 64-bit for PE32+ or 32-bit for PE32
-   printf("\033[31mSection Alignment:\033[0m 0x%x\n",
+   printf("\033[34mSection Alignment:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.SectionAlignment);
-   printf("\033[31mFile Alignment:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.FileAlignment);
-   printf("\033[31mMajor OS Version:\033[0m %d\n",
+   printf("\033[34mFile Alignment:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.FileAlignment);
+   printf("\033[34mMajor OS Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
-   printf("\033[31mMinor OS Version:\033[0m %d\n",
+   printf("\033[34mMinor OS Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
-   printf("\033[31mMajor Image Version:\033[0m %d\n",
+   printf("\033[34mMajor Image Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MajorImageVersion);
-   printf("\033[31mMinor Image Version:\033[0m %d\n",
+   printf("\033[34mMinor Image Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MinorImageVersion);
-   printf("\033[31mMajor Subsystem Version:\033[0m %d\n",
+   printf("\033[34mMajor Subsystem Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MajorSubsystemVersion);
-   printf("\033[31mMinor Subsystem Version:\033[0m %d\n",
+   printf("\033[34mMinor Subsystem Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MinorSubsystemVersion);
-   printf("\033[31mWin32 Version Value:\033[0m 0x%x\n",
+   printf("\033[34mWin32 Version Value:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.Win32VersionValue); // Should be 0
-   printf("\033[31mSize of Image:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfImage);
-   printf("\033[31mSize of Headers:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfHeaders);
-   printf("\033[31mChecksum:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.CheckSum);
-   printf("\033[31mSubsystem:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Subsystem);
-   printf("\033[31mDLL Characteristics:\033[0m 0x%x\n",
+   printf("\033[34mSize of Image:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfImage);
+   printf("\033[34mSize of Headers:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfHeaders);
+   printf("\033[34mChecksum:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.CheckSum);
+   printf("\033[34mSubsystem:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Subsystem);
+   printf("\033[34mDLL Characteristics:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.DllCharacteristics);
-   printf("\033[31mSize of Stack Reserve:\033[0m 0x%llx\n",
+   printf("\033[34mSize of Stack Reserve:\033[0m 0x%llx\n",
           pNtHeaders->OptionalHeader.SizeOfStackReserve); // 64-bit for PE32+
-   printf("\033[31mSize of Stack Commit:\033[0m 0x%llx\n",
+   printf("\033[34mSize of Stack Commit:\033[0m 0x%llx\n",
           pNtHeaders->OptionalHeader.SizeOfStackCommit); // 64-bit for PE32+
-   printf("\033[31mSize of Heap Reserve:\033[0m 0x%llx\n",
+   printf("\033[34mSize of Heap Reserve:\033[0m 0x%llx\n",
           pNtHeaders->OptionalHeader.SizeOfHeapReserve); // 64-bit for PE32+
-   printf("\033[31mSize of Heap Commit:\033[0m 0x%llx\n",
+   printf("\033[34mSize of Heap Commit:\033[0m 0x%llx\n",
           pNtHeaders->OptionalHeader.SizeOfHeapCommit); // 64-bit for PE32+
-   printf("\033[31mLoader Flags:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.LoaderFlags);
-   printf("\033[31mNumber of Rva and Sizes:\033[0m 0x%x\n",
+   printf("\033[34mLoader Flags:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.LoaderFlags);
+   printf("\033[34mNumber of Rva and Sizes:\033[0m 0x%x\n",
           pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
 }
 
