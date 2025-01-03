@@ -162,7 +162,7 @@ void listFiles(int verbose, const char *directory) {
   hFind = FindFirstFile(searchPath, &findFileData);
 
   if (hFind == INVALID_HANDLE_VALUE) {
-    printf("\033[31mInvalid file handle.\033[0m");
+    printf("\033[31mInvalid file handle.\n\033[0m");
     printf("Make sure the directory path is correct and you have the necessary "
            "permissions.\n");
 
@@ -179,7 +179,7 @@ void listFiles(int verbose, const char *directory) {
       }
 
       char filePath[MAX_PATH_LENGTH];
-      printf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
                findFileData.cFileName);
 
       analyze_pe_file(filePath, verbose);
