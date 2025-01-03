@@ -1,0 +1,144 @@
+[32mAnalysing file --> bin/pextract.exe
+[0m==============================================
+[34me_magic:[0m    23117
+[34me_cblp:[0m     144
+[34me_cp:[0m       3
+[34me_crlc:[0m     0
+[34me_cparhdr:[0m  4
+[34me_minalloc:[0m 0
+[34me_maxalloc:[0m 65535
+[34me_ss:[0m       0
+[34me_sp:[0m       184
+[34me_csum:[0m     0
+[34me_ip:[0m       0
+[34me_cs:[0m       0
+[34me_lfarlc:[0m   64
+[34me_ovno:[0m     0
+[34me_res:[0m      11337756
+[34me_oemid:[0m    0
+[34me_oeminfo:[0m  0
+[34me_res2:[0m     11337768
+[34me_lfanew:[0m   128
+Imported DLLs:
+ [34mKERNEL32.dll[0m
+		CloseHandle
+		CreateFileA
+		CreateFileMappingA
+		DeleteCriticalSection
+		EnterCriticalSection
+		ExitProcess
+		FindClose
+		FindFirstFileA
+		FindNextFileA
+		FreeLibrary
+		GetCommandLineA
+		GetLastError
+		GetModuleHandleA
+		GetProcAddress
+		InitializeCriticalSection
+		InterlockedExchange
+		IsDBCSLeadByteEx
+		LeaveCriticalSection
+		LoadLibraryA
+		MapViewOfFile
+		MultiByteToWideChar
+		SetUnhandledExceptionFilter
+		Sleep
+		TlsGetValue
+		UnmapViewOfFile
+		VirtualProtect
+		VirtualQuery
+		WideCharToMultiByte
+ [34mmsvcrt.dll[0m
+		_strdup
+		_stricoll
+ [34mmsvcrt.dll[0m
+		__getmainargs
+		__mb_cur_max
+		__p__environ
+		__p__fmode
+		__set_app_type
+		_cexit
+		_errno
+		_fpreset
+		_fullpath
+		_iob
+		_isctype
+		_onexit
+		_pctype
+		_setmode
+		abort
+		atexit
+		atoi
+		calloc
+		exit
+		fopen
+		fprintf
+		fputc
+		fread
+		free
+		fseek
+		fwrite
+		getenv
+		localeconv
+		malloc
+		mbstowcs
+		memcpy
+		printf
+		puts
+		realloc
+		setlocale
+		signal
+		strchr
+		strcoll
+		strlen
+		tolower
+		vfprintf
+		wcslen
+		wcstombs
+[34mSection 1:[0m .text
+[34mSection 2:[0m .data
+[34mSection 3:[0m .rdata
+[34mSection 4:[0m /4
+[34mSection 5:[0m .bss
+[34mSection 6:[0m .idata
+[34mSection 7:[0m .CRT
+[34mSection 8:[0m .tls
+[34mSection 9:[0m /14
+[34mSection 10:[0m /29
+[34mSection 11:[0m /41
+[34mSection 12:[0m /55
+[34mSection 13:[0m /67
+[34mSection 14:[0m /80
+[34mSection 15:[0m /91
+[34mSection 16:[0m /102
+[34mMagic:[0m 0x10b
+[34mMajor Linker Version:[0m 2
+[34mMinor Linker Version:[0m 28
+[34mSize of Code:[0m 0xa200
+[34mSize of Initialized Data:[0m 0xe000
+[34mSize of Uninitialized Data:[0m 0xc00
+[34mAddress of Entry Point:[0m 0x12e0
+[34mBase of Code:[0m 0x1000
+[34mBase of Data:[0m 0xc000
+[34mImage Base:[0m 0x400000
+[34mSection Alignment:[0m 0x1000
+[34mFile Alignment:[0m 0x200
+[34mMajor OS Version:[0m 4
+[34mMinor OS Version:[0m 0
+[34mMajor Image Version:[0m 1
+[34mMinor Image Version:[0m 0
+[34mMajor Subsystem Version:[0m 4
+[34mMinor Subsystem Version:[0m 0
+[34mWin32 Version Value:[0m 0x0
+[34mSize of Image:[0m 0x2b000
+[34mSize of Headers:[0m 0x400
+[34mChecksum:[0m 0x2f38b
+[34mSubsystem:[0m 0x3
+[34mDLL Characteristics:[0m 0x0
+[34mSize of Stack Reserve:[0m 0x200000
+[34mSize of Stack Commit:[0m 0x1000
+[34mSize of Heap Reserve:[0m 0x100000
+[34mSize of Heap Commit:[0m 0x1000
+[34mLoader Flags:[0m 0x0
+[34mNumber of Rva and Sizes:[0m 0x10
