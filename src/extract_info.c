@@ -179,7 +179,7 @@ void listFiles(int verbose, const char *directory) {
       }
 
       char filePath[MAX_PATH_LENGTH];
-      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+      printf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
                findFileData.cFileName);
 
       analyze_pe_file(filePath, verbose);
