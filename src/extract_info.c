@@ -55,7 +55,13 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
       (PIMAGE_IMPORT_DESCRIPTOR)(pBase + importDirectoryOffset);
 
   printf("Imported DLLs:\n");
+
   while (pImportDesc->Name != 0) {
+    if (pImportDesc->Name < pNtHeaders->OptionalHeader.ImageBase ||
+        pImportDesc->Name >= pNtHeaders->OptionalHeader.SizeOfImage) {
+        printf("\033[31mInvalid Import Descriptor Name RVA.\033[0m\n");
+        break;
+    }
     DWORD nameOffset = rva_to_offset(pNtHeaders, pImportDesc->Name);
 
     if (nameOffset == 0) {
