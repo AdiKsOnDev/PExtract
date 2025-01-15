@@ -7,7 +7,7 @@ def parse_analysis_file(input_file, output_csv):
     current_file_data = None
     all_metadata_keys = set()
 
-    with open(input_file, 'r', encoding='utf-8') as file:
+    with open(input_file, 'r', encoding='utf-8', errors='ignore') as file:
         for line in file:
             line = line.strip()
 
@@ -32,7 +32,12 @@ def parse_analysis_file(input_file, output_csv):
                 elif "Imported DLLs:" in line:
                     current_file_data["dlls"] = []
                 elif line.startswith("[34m") and line.endswith("[0m"):
-                    dll_name = re.search(r'\[34m(.+?)\[0m', line).group(1)
+                    match = re.search(r'\[34m(.+?)\[0m', line)
+                    if match:
+                        dll_name = match.group(1)
+                        current_file_data["dlls"].append({"name": dll_name, "functions": []})
+                    else:
+                        print(f"Warning: Could not parse DLL names from file: {current_file_data['file_name']}")
                     current_file_data["dlls"].append({"name": dll_name, "functions": []})
                 elif current_file_data["dlls"] and not line.startswith("[34m"):
                     current_file_data["dlls"][-1]["functions"].append(line.strip())
