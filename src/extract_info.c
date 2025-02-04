@@ -26,7 +26,8 @@ void print_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
   return;
 }
 
-void print_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHeaders, FILE *file) {
+void print_section_names(PIMAGE_DOS_HEADER pDosHeader,
+                         PIMAGE_NT_HEADERS pNtHeaders, FILE *file) {
   // Move to the section headers
   IMAGE_SECTION_HEADER sectionHeader;
   fseek(file, pDosHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
@@ -57,8 +58,8 @@ void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
   printf("Imported DLLs:\n");
 
   if (pImportDesc == NULL) {
-      printf("Invalid pImportDesc pointer.\n");
-      return;
+    printf("Invalid pImportDesc pointer.\n");
+    return;
   }
 
   while (pImportDesc->Name != 0) {
@@ -99,99 +100,110 @@ void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
 
 // Optional Headers extraction, check the header file for documentation
 void print_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
-   printf("\033[34mMagic:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Magic);
-   printf("\033[34mMajor Linker Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MajorLinkerVersion);
-   printf("\033[34mMinor Linker Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MinorLinkerVersion);
-   printf("\033[34mSize of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfCode);
-   printf("\033[34mSize of Initialized Data:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.SizeOfInitializedData);
-   printf("\033[34mSize of Uninitialized Data:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.SizeOfUninitializedData);
-   printf("\033[34mAddress of Entry Point:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.AddressOfEntryPoint);
-   printf("\033[34mBase of Code:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfCode);
-  
-   if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
-     // Print BaseOfData for PE32 only
-     printf("\033[34mBase of Data:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.BaseOfData);
-   }
-  
-   printf("\033[34mImage Base:\033[0m 0x%llx\n",
-          pNtHeaders->OptionalHeader
-              .ImageBase); // 64-bit for PE32+ or 32-bit for PE32
-   printf("\033[34mSection Alignment:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.SectionAlignment);
-   printf("\033[34mFile Alignment:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.FileAlignment);
-   printf("\033[34mMajor OS Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
-   printf("\033[34mMinor OS Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
-   printf("\033[34mMajor Image Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MajorImageVersion);
-   printf("\033[34mMinor Image Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MinorImageVersion);
-   printf("\033[34mMajor Subsystem Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MajorSubsystemVersion);
-   printf("\033[34mMinor Subsystem Version:\033[0m %d\n",
-          pNtHeaders->OptionalHeader.MinorSubsystemVersion);
-   printf("\033[34mWin32 Version Value:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.Win32VersionValue); // Should be 0
-   printf("\033[34mSize of Image:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfImage);
-   printf("\033[34mSize of Headers:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.SizeOfHeaders);
-   printf("\033[34mChecksum:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.CheckSum);
-   printf("\033[34mSubsystem:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Subsystem);
-   printf("\033[34mDLL Characteristics:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.DllCharacteristics);
-   printf("\033[34mSize of Stack Reserve:\033[0m 0x%llx\n",
-          pNtHeaders->OptionalHeader.SizeOfStackReserve); // 64-bit for PE32+
-   printf("\033[34mSize of Stack Commit:\033[0m 0x%llx\n",
-          pNtHeaders->OptionalHeader.SizeOfStackCommit); // 64-bit for PE32+
-   printf("\033[34mSize of Heap Reserve:\033[0m 0x%llx\n",
-          pNtHeaders->OptionalHeader.SizeOfHeapReserve); // 64-bit for PE32+
-   printf("\033[34mSize of Heap Commit:\033[0m 0x%llx\n",
-          pNtHeaders->OptionalHeader.SizeOfHeapCommit); // 64-bit for PE32+
-   printf("\033[34mLoader Flags:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.LoaderFlags);
-   printf("\033[34mNumber of Rva and Sizes:\033[0m 0x%x\n",
-          pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
+  printf("\033[34mMagic:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Magic);
+  printf("\033[34mMajor Linker Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MajorLinkerVersion);
+  printf("\033[34mMinor Linker Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MinorLinkerVersion);
+  printf("\033[34mSize of Code:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SizeOfCode);
+  printf("\033[34mSize of Initialized Data:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SizeOfInitializedData);
+  printf("\033[34mSize of Uninitialized Data:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SizeOfUninitializedData);
+  printf("\033[34mAddress of Entry Point:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.AddressOfEntryPoint);
+  printf("\033[34mBase of Code:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.BaseOfCode);
+
+  if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
+    // Print BaseOfData for PE32 only
+    printf("\033[34mBase of Data:\033[0m 0x%x\n",
+           pNtHeaders->OptionalHeader.BaseOfData);
+  }
+
+  printf("\033[34mImage Base:\033[0m 0x%llx\n",
+         pNtHeaders->OptionalHeader
+             .ImageBase); // 64-bit for PE32+ or 32-bit for PE32
+  printf("\033[34mSection Alignment:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SectionAlignment);
+  printf("\033[34mFile Alignment:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.FileAlignment);
+  printf("\033[34mMajor OS Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
+  printf("\033[34mMinor OS Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
+  printf("\033[34mMajor Image Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MajorImageVersion);
+  printf("\033[34mMinor Image Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MinorImageVersion);
+  printf("\033[34mMajor Subsystem Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MajorSubsystemVersion);
+  printf("\033[34mMinor Subsystem Version:\033[0m %d\n",
+         pNtHeaders->OptionalHeader.MinorSubsystemVersion);
+  printf("\033[34mWin32 Version Value:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.Win32VersionValue); // Should be 0
+  printf("\033[34mSize of Image:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SizeOfImage);
+  printf("\033[34mSize of Headers:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.SizeOfHeaders);
+  printf("\033[34mChecksum:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.CheckSum);
+  printf("\033[34mSubsystem:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.Subsystem);
+  printf("\033[34mDLL Characteristics:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.DllCharacteristics);
+  printf("\033[34mSize of Stack Reserve:\033[0m 0x%llx\n",
+         pNtHeaders->OptionalHeader.SizeOfStackReserve); // 64-bit for PE32+
+  printf("\033[34mSize of Stack Commit:\033[0m 0x%llx\n",
+         pNtHeaders->OptionalHeader.SizeOfStackCommit); // 64-bit for PE32+
+  printf("\033[34mSize of Heap Reserve:\033[0m 0x%llx\n",
+         pNtHeaders->OptionalHeader.SizeOfHeapReserve); // 64-bit for PE32+
+  printf("\033[34mSize of Heap Commit:\033[0m 0x%llx\n",
+         pNtHeaders->OptionalHeader.SizeOfHeapCommit); // 64-bit for PE32+
+  printf("\033[34mLoader Flags:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.LoaderFlags);
+  printf("\033[34mNumber of Rva and Sizes:\033[0m 0x%x\n",
+         pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
 }
 
 // A helper function to list all files in a given directory, check the header
 // file for documentation
-void listFiles(int verbose, const char *directory) {
-    WIN32_FIND_DATA findFileData;
-    HANDLE hFind = INVALID_HANDLE_VALUE;
-    char searchPath[MAX_PATH_LENGTH];
+void listFiles(int verbose, const char *directory, int silent, char *output) {
+  WIN32_FIND_DATA findFileData;
+  HANDLE hFind = INVALID_HANDLE_VALUE;
+  char searchPath[MAX_PATH_LENGTH];
 
-    snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
-    hFind = FindFirstFile(searchPath, &findFileData);
+  snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
+  hFind = FindFirstFile(searchPath, &findFileData);
 
-    if (hFind == INVALID_HANDLE_VALUE) {
-        printf("\033[31mInvalid file handle.\033[0m\n");
-        printf("Make sure the directory path is correct and you have the necessary permissions.\n");
-        return;
-    } else {
-        printf("Listing files in directory: %s\n", directory);
-        do {
-            if (verbose) {
-                printf("Found: %s\n", findFileData.cFileName);
-                if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-                    printf("Skipping directory: %s\n", findFileData.cFileName);
-                    continue;
-                }
-            }
-
-            char filePath[MAX_PATH_LENGTH];
-            snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory, findFileData.cFileName);
-
-            analyze_pe_file(filePath, verbose);
-        } while (FindNextFile(hFind, &findFileData) != 0);
-
-        if (GetLastError() != ERROR_NO_MORE_FILES) {
-            printf("\033[31mError while iterating through directory.\033[0m\n");
+  if (hFind == INVALID_HANDLE_VALUE) {
+    printf("\033[31mInvalid file handle.\033[0m\n");
+    printf("Make sure the directory path is correct and you have the necessary "
+           "permissions.\n");
+    return;
+  } else {
+    printf("Listing files in directory: %s\n", directory);
+    do {
+      if (verbose) {
+        printf("Found: %s\n", findFileData.cFileName);
+        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+          printf("Skipping directory: %s\n", findFileData.cFileName);
+          continue;
         }
+      }
 
-        FindClose(hFind);
+      char filePath[MAX_PATH_LENGTH];
+      snprintf(filePath, MAX_PATH_LENGTH, "%s\\%s", directory,
+               findFileData.cFileName);
+
+      analyze_pe_file(filePath, verbose, silent, output);
+    } while (FindNextFile(hFind, &findFileData) != 0);
+
+    if (GetLastError() != ERROR_NO_MORE_FILES) {
+      printf("\033[31mError while iterating through directory.\033[0m\n");
     }
+
+    FindClose(hFind);
+  }
 }

@@ -9,9 +9,9 @@
  */
 DWORD rva_to_offset(PIMAGE_NT_HEADERS pNtHeaders, DWORD rva) {
   if (rva == 0 || rva >= pNtHeaders->OptionalHeader.SizeOfImage) {
-      return 0; // Invalid offset
+    return 0; // Invalid offset
   }
-  
+
   PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(pNtHeaders);
 
   for (int i = 0; i < pNtHeaders->FileHeader.NumberOfSections; i++, section++) {

@@ -10,6 +10,6 @@
  *
  * return: DWORD offset
  */
-DWORD rva_to_offset(PIMAGE_NT_HEADERS pNtHeaders, DWORD rva); 
+DWORD rva_to_offset(PIMAGE_NT_HEADERS pNtHeaders, DWORD rva);
 
 #endif // !DISASSEMBLY

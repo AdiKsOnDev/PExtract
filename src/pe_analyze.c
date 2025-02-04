@@ -2,8 +2,10 @@
 #include "../include/disassembly.h"
 
 void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
-  printf("\033[32mAnalysing file --> %s\n\033[0m", pe_path);
-  printf("==============================================\n");
+  if (!silent) {
+    printf("\033[32mAnalysing file --> %s\n\033[0m", pe_path);
+    printf("==============================================\n");
+  }
 
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -52,8 +54,10 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   if (!silent) {
     print_DOS_header_info(pDosHeader);
     print_imported_dlls((PBYTE)pBase, pNtHeaders);
-    print_section_names(pDosHeader, pNtHeaders, file);
-    print_optional_headers(pNtHeaders);
+    if (verbose) {
+      print_section_names(pDosHeader, pNtHeaders, file);
+      print_optional_headers(pNtHeaders);
+    }
   }
 
   UnmapViewOfFile(pBase);
