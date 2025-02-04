@@ -279,7 +279,7 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
       fprintf(json_file, "      \"Error\": \"Invalid DLL name address\"\n");
       fprintf(json_file, "    }\n");
 
-      fprintf(json_file, "  ],")
+      fprintf(json_file, "  ],");
       break;
     }
 
