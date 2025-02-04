@@ -11,6 +11,15 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   FILE *file = fopen(pe_path, "rb");
 
+  if (output != "") {
+    FILE *json_file = fopen(output, "a");
+
+    if (!json_file) {
+        perror("Failed to open JSON file");
+        return;
+    }
+  };
+
   if (hFile == INVALID_HANDLE_VALUE) {
     printf("\033[31mFailed to open file.\n\033[0m");
     return;
@@ -57,6 +66,15 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     if (verbose) {
       print_section_names(pDosHeader, pNtHeaders, file);
       print_optional_headers(pNtHeaders);
+    }
+  }
+
+  if (output != ""){
+    DOS_header_to_json(pDosHeader, json_file);
+    imported_dlls_to_json(pBase, pNtHeaders, json_file);
+    if (verbose) {
+      section_names_to_json(pDosHeader, pNtHeaders, file, json_file);
+      optional_headers_to_json(pNtHeaders, json_file);
     }
   }
 
