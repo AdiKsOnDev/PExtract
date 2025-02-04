@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     }
 
   if (options.directory == 1) {
-    listFiles(options.verbose, options.input);
+    listFiles(options.verbose, options.input, options.silent, options.output);
 
     return 0;
   }

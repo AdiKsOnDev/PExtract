@@ -53,6 +53,6 @@ void print_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
  *
  *  return: void
  */
-void listFiles(int verbose, const char *directory);
+void listFiles(int verbose, const char *directory, int silent, char *output);
 
 #endif // !EXTRACT_FUNCTIONS
