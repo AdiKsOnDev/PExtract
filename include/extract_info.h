@@ -11,7 +11,7 @@
  * -------------------------------------------
  * param: pDosHeader, DOS Header of a PE file
  */
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
+void print_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
 
 /* Given pBase and NT Headers of a PE file,
  * extracts the DLLs imported in the executable
@@ -21,7 +21,7 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader);
  *
  * return: void
  */
-void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
+void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
 
 /* Given DOS and NT Headers of a PE file,
  * extracts the section names used in the executable
@@ -32,7 +32,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
  *
  * return: void
  */
-void extract_section_names(PIMAGE_DOS_HEADER pDosHeader,
+void print_section_names(PIMAGE_DOS_HEADER pDosHeader,
                            PIMAGE_NT_HEADERS pNtHeaders, 
                            FILE *file);
 
@@ -43,7 +43,7 @@ void extract_section_names(PIMAGE_DOS_HEADER pDosHeader,
  *
  * return: void
  */
-void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
+void print_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
 
 /* Given a path to directory, return a list of all files
  * in it.
