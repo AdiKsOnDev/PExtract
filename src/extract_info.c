@@ -177,6 +177,18 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
   snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
   hFind = FindFirstFile(searchPath, &findFileData);
 
+  if (strcmp(output, "") != 0) {
+    json_file = fopen(output, "a");
+
+    if (!json_file) {
+        perror("Failed to open JSON file");
+        return;
+    }
+
+    fprintf(json_file, "{");
+    fclose(json_file)
+  };
+
   if (hFind == INVALID_HANDLE_VALUE) {
     printf("\033[31mInvalid file handle.\033[0m\n");
     printf("Make sure the directory path is correct and you have the necessary "
@@ -199,10 +211,23 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
 
       analyze_pe_file(filePath, verbose, silent, output);
     } while (FindNextFile(hFind, &findFileData) != 0);
+    
 
     if (GetLastError() != ERROR_NO_MORE_FILES) {
       printf("\033[31mError while iterating through directory.\033[0m\n");
     }
+
+    if (strcmp(output, "") != 0) {
+      json_file = fopen(output, "a");
+
+      if (!json_file) {
+          perror("Failed to open JSON file");
+          return;
+      }
+
+      fprintf(json_file, "}");
+      fclose(json_file)
+    };
 
     FindClose(hFind);
   }
