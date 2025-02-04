@@ -33,8 +33,7 @@ void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders);
  * return: void
  */
 void print_section_names(PIMAGE_DOS_HEADER pDosHeader,
-                           PIMAGE_NT_HEADERS pNtHeaders, 
-                           FILE *file);
+                         PIMAGE_NT_HEADERS pNtHeaders, FILE *file);
 
 /* Given the Headers of a PE file, extracts and prints out
  * OptionalHeader fields
