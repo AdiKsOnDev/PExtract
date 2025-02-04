@@ -211,7 +211,6 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
 // FUNCTIONS CREATED FOR SAVING TO JSON
 
 void DOS_header_to_json(PIMAGE_DOS_HEADER pDosHeader, FILE *json_file) {
-  fprintf(json_file, "{\n");
   fprintf(json_file, "  \"DOS_Header\": {\n");
   fprintf(json_file, "    \"e_magic\": %d,\n", pDosHeader->e_magic);
   fprintf(json_file, "    \"e_cblp\": %d,\n", pDosHeader->e_cblp);
@@ -232,8 +231,7 @@ void DOS_header_to_json(PIMAGE_DOS_HEADER pDosHeader, FILE *json_file) {
   fprintf(json_file, "    \"e_oeminfo\": %d,\n", pDosHeader->e_oeminfo);
   fprintf(json_file, "    \"e_res2\": %d,\n", pDosHeader->e_res2);
   fprintf(json_file, "    \"e_lfanew\": %d\n", pDosHeader->e_lfanew);
-  fprintf(json_file, "  }\n");
-  fprintf(json_file, "}\n");
+  fprintf(json_file, "  },\n");
 }
 
 void section_names_to_json(PIMAGE_DOS_HEADER pDosHeader,
@@ -242,7 +240,6 @@ void section_names_to_json(PIMAGE_DOS_HEADER pDosHeader,
   IMAGE_SECTION_HEADER sectionHeader;
   fseek(file, pDosHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
 
-  fprintf(json_file, "{\n");
   fprintf(json_file, "  \"Sections\": [\n");
 
   for (int i = 0; i < pNtHeaders->FileHeader.NumberOfSections; i++) {
@@ -254,8 +251,7 @@ void section_names_to_json(PIMAGE_DOS_HEADER pDosHeader,
             (i == pNtHeaders->FileHeader.NumberOfSections - 1) ? "" : ",");
   }
 
-  fprintf(json_file, "  ]\n");
-  fprintf(json_file, "}\n");
+  fprintf(json_file, "  ],\n");
 }
 
 void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
@@ -265,9 +261,7 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
           .VirtualAddress;
 
   if (importDirectoryRVA == 0) {
-    fprintf(json_file, "{\n");
-    fprintf(json_file, "  \"Imported_DLLs\": \"No import directory found\"\n");
-    fprintf(json_file, "}\n");
+    fprintf(json_file, "  \"Imported_DLLs\": \"No import directory found\",\n");
     return;
   }
 
@@ -275,7 +269,6 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
   PIMAGE_IMPORT_DESCRIPTOR pImportDesc =
       (PIMAGE_IMPORT_DESCRIPTOR)(pBase + importDirectoryOffset);
 
-  fprintf(json_file, "{\n");
   fprintf(json_file, "  \"Imported_DLLs\": [\n");
 
   while (pImportDesc->Name != 0) {
@@ -285,6 +278,8 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
       fprintf(json_file, "    {\n");
       fprintf(json_file, "      \"Error\": \"Invalid DLL name address\"\n");
       fprintf(json_file, "    }\n");
+
+      fprintf(json_file, "  ],")
       break;
     }
 
@@ -325,12 +320,10 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
     pImportDesc++;
   }
 
-  fprintf(json_file, "  ]\n");
-  fprintf(json_file, "}\n");
+  fprintf(json_file, "  ],\n");
 }
 
 void optional_headers_to_json(PIMAGE_NT_HEADERS pNtHeaders, FILE *json_file) {
-  fprintf(json_file, "{\n");
   fprintf(json_file, "  \"Optional_Headers\": {\n");
   fprintf(json_file, "    \"Magic\": \"0x%x\",\n",
           pNtHeaders->OptionalHeader.Magic);
@@ -396,6 +389,5 @@ void optional_headers_to_json(PIMAGE_NT_HEADERS pNtHeaders, FILE *json_file) {
           pNtHeaders->OptionalHeader.LoaderFlags);
   fprintf(json_file, "    \"Number_of_Rva_and_Sizes\": \"0x%x\"\n",
           pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
-  fprintf(json_file, "  }\n");
-  fprintf(json_file, "}\n");
+  fprintf(json_file, "  },\n");
 }

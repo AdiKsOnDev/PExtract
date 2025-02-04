@@ -22,7 +22,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
         return;
     }
 
-    fprintf(json_file, "%s: {", pe_path);
+    fprintf(json_file, "{%s:\n", pe_path);
   };
 
   if (hFile == INVALID_HANDLE_VALUE) {
