@@ -1,3 +1,4 @@
+#include <string.h>
 #include "../include/pe_analyze.h"
 #include "../include/disassembly.h"
 
@@ -11,7 +12,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   FILE *file = fopen(pe_path, "rb");
 
-  if (output != "") {
+  if (strcmp(output, "") != 0) {
     FILE *json_file = fopen(output, "a");
 
     if (!json_file) {
