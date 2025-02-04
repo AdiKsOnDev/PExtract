@@ -82,7 +82,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
       optional_headers_to_json(pNtHeaders, json_file);
     }
 
-    fprintf(json_file, "}")
+    fprintf(json_file, "}");
   }
 
   UnmapViewOfFile(pBase);
