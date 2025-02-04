@@ -11,9 +11,10 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   FILE *file = fopen(pe_path, "rb");
+  FILE *json_file;
 
   if (strcmp(output, "") != 0) {
-    FILE *json_file = fopen(output, "a");
+    json_file = fopen(output, "a");
 
     if (!json_file) {
         perror("Failed to open JSON file");
