@@ -207,3 +207,195 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
     FindClose(hFind);
   }
 }
+
+// FUNCTIONS CREATED FOR SAVING TO JSON
+
+void DOS_header_to_json(PIMAGE_DOS_HEADER pDosHeader, FILE *json_file) {
+  fprintf(json_file, "{\n");
+  fprintf(json_file, "  \"DOS_Header\": {\n");
+  fprintf(json_file, "    \"e_magic\": %d,\n", pDosHeader->e_magic);
+  fprintf(json_file, "    \"e_cblp\": %d,\n", pDosHeader->e_cblp);
+  fprintf(json_file, "    \"e_cp\": %d,\n", pDosHeader->e_cp);
+  fprintf(json_file, "    \"e_crlc\": %d,\n", pDosHeader->e_crlc);
+  fprintf(json_file, "    \"e_cparhdr\": %d,\n", pDosHeader->e_cparhdr);
+  fprintf(json_file, "    \"e_minalloc\": %d,\n", pDosHeader->e_minalloc);
+  fprintf(json_file, "    \"e_maxalloc\": %d,\n", pDosHeader->e_maxalloc);
+  fprintf(json_file, "    \"e_ss\": %d,\n", pDosHeader->e_ss);
+  fprintf(json_file, "    \"e_sp\": %d,\n", pDosHeader->e_sp);
+  fprintf(json_file, "    \"e_csum\": %d,\n", pDosHeader->e_csum);
+  fprintf(json_file, "    \"e_ip\": %d,\n", pDosHeader->e_ip);
+  fprintf(json_file, "    \"e_cs\": %d,\n", pDosHeader->e_cs);
+  fprintf(json_file, "    \"e_lfarlc\": %d,\n", pDosHeader->e_lfarlc);
+  fprintf(json_file, "    \"e_ovno\": %d,\n", pDosHeader->e_ovno);
+  fprintf(json_file, "    \"e_res\": %d,\n", pDosHeader->e_res);
+  fprintf(json_file, "    \"e_oemid\": %d,\n", pDosHeader->e_oemid);
+  fprintf(json_file, "    \"e_oeminfo\": %d,\n", pDosHeader->e_oeminfo);
+  fprintf(json_file, "    \"e_res2\": %d,\n", pDosHeader->e_res2);
+  fprintf(json_file, "    \"e_lfanew\": %d\n", pDosHeader->e_lfanew);
+  fprintf(json_file, "  }\n");
+  fprintf(json_file, "}\n");
+}
+
+void section_names_to_json(PIMAGE_DOS_HEADER pDosHeader,
+                           PIMAGE_NT_HEADERS pNtHeaders, FILE *file,
+                           FILE *json_file) {
+  IMAGE_SECTION_HEADER sectionHeader;
+  fseek(file, pDosHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
+
+  fprintf(json_file, "{\n");
+  fprintf(json_file, "  \"Sections\": [\n");
+
+  for (int i = 0; i < pNtHeaders->FileHeader.NumberOfSections; i++) {
+    fread(&sectionHeader, sizeof(IMAGE_SECTION_HEADER), 1, file);
+    fprintf(json_file, "    {\n");
+    fprintf(json_file, "      \"Section_%d\": \"%.8s\"\n", i + 1,
+            sectionHeader.Name);
+    fprintf(json_file, "    }%s\n",
+            (i == pNtHeaders->FileHeader.NumberOfSections - 1) ? "" : ",");
+  }
+
+  fprintf(json_file, "  ]\n");
+  fprintf(json_file, "}\n");
+}
+
+void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
+                           FILE *json_file) {
+  DWORD importDirectoryRVA =
+      pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
+          .VirtualAddress;
+
+  if (importDirectoryRVA == 0) {
+    fprintf(json_file, "{\n");
+    fprintf(json_file, "  \"Imported_DLLs\": \"No import directory found\"\n");
+    fprintf(json_file, "}\n");
+    return;
+  }
+
+  DWORD importDirectoryOffset = rva_to_offset(pNtHeaders, importDirectoryRVA);
+  PIMAGE_IMPORT_DESCRIPTOR pImportDesc =
+      (PIMAGE_IMPORT_DESCRIPTOR)(pBase + importDirectoryOffset);
+
+  fprintf(json_file, "{\n");
+  fprintf(json_file, "  \"Imported_DLLs\": [\n");
+
+  while (pImportDesc->Name != 0) {
+    DWORD nameOffset = rva_to_offset(pNtHeaders, pImportDesc->Name);
+
+    if (nameOffset == 0) {
+      fprintf(json_file, "    {\n");
+      fprintf(json_file, "      \"Error\": \"Invalid DLL name address\"\n");
+      fprintf(json_file, "    }\n");
+      break;
+    }
+
+    fprintf(json_file, "    {\n");
+    fprintf(json_file, "      \"DLL\": \"%s\",\n",
+            (char *)(pBase + nameOffset));
+    fprintf(json_file, "      \"Functions\": [\n");
+
+    DWORD thunk = pImportDesc->OriginalFirstThunk == 0
+                      ? pImportDesc->FirstThunk
+                      : pImportDesc->OriginalFirstThunk;
+    PIMAGE_THUNK_DATA thunkData =
+        (PIMAGE_THUNK_DATA)(pBase + rva_to_offset(pNtHeaders, thunk));
+
+    while (thunkData->u1.AddressOfData != 0) {
+      if (thunkData->u1.Ordinal & IMAGE_ORDINAL_FLAG) {
+        fprintf(json_file, "        {\n");
+        fprintf(json_file, "          \"Ordinal\": \"%08x\"\n",
+                IMAGE_ORDINAL(thunkData->u1.Ordinal));
+        fprintf(json_file, "        }%s\n",
+                (thunkData[1].u1.AddressOfData == 0) ? "" : ",");
+      } else {
+        PIMAGE_IMPORT_BY_NAME pImportByName =
+            (PIMAGE_IMPORT_BY_NAME)(pBase +
+                                    rva_to_offset(pNtHeaders,
+                                                  thunkData->u1.AddressOfData));
+        fprintf(json_file, "        {\n");
+        fprintf(json_file, "          \"Name\": \"%s\"\n", pImportByName->Name);
+        fprintf(json_file, "        }%s\n",
+                (thunkData[1].u1.AddressOfData == 0) ? "" : ",");
+      }
+      thunkData++;
+    }
+
+    fprintf(json_file, "      ]\n");
+    fprintf(json_file, "    }%s\n", (pImportDesc[1].Name == 0) ? "" : ",");
+
+    pImportDesc++;
+  }
+
+  fprintf(json_file, "  ]\n");
+  fprintf(json_file, "}\n");
+}
+
+void optional_headers_to_json(PIMAGE_NT_HEADERS pNtHeaders, FILE *json_file) {
+  fprintf(json_file, "{\n");
+  fprintf(json_file, "  \"Optional_Headers\": {\n");
+  fprintf(json_file, "    \"Magic\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.Magic);
+  fprintf(json_file, "    \"Major_Linker_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MajorLinkerVersion);
+  fprintf(json_file, "    \"Minor_Linker_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MinorLinkerVersion);
+  fprintf(json_file, "    \"Size_of_Code\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SizeOfCode);
+  fprintf(json_file, "    \"Size_of_Initialized_Data\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SizeOfInitializedData);
+  fprintf(json_file, "    \"Size_of_Uninitialized_Data\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SizeOfUninitializedData);
+  fprintf(json_file, "    \"Address_of_Entry_Point\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.AddressOfEntryPoint);
+  fprintf(json_file, "    \"Base_of_Code\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.BaseOfCode);
+
+  if (pNtHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) {
+    fprintf(json_file, "    \"Base_of_Data\": \"0x%x\",\n",
+            pNtHeaders->OptionalHeader.BaseOfData);
+  }
+
+  fprintf(json_file, "    \"Image_Base\": \"0x%llx\",\n",
+          pNtHeaders->OptionalHeader.ImageBase);
+  fprintf(json_file, "    \"Section_Alignment\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SectionAlignment);
+  fprintf(json_file, "    \"File_Alignment\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.FileAlignment);
+  fprintf(json_file, "    \"Major_OS_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MajorOperatingSystemVersion);
+  fprintf(json_file, "    \"Minor_OS_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MinorOperatingSystemVersion);
+  fprintf(json_file, "    \"Major_Image_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MajorImageVersion);
+  fprintf(json_file, "    \"Minor_Image_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MinorImageVersion);
+  fprintf(json_file, "    \"Major_Subsystem_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MajorSubsystemVersion);
+  fprintf(json_file, "    \"Minor_Subsystem_Version\": %d,\n",
+          pNtHeaders->OptionalHeader.MinorSubsystemVersion);
+  fprintf(json_file, "    \"Win32_Version_Value\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.Win32VersionValue);
+  fprintf(json_file, "    \"Size_of_Image\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SizeOfImage);
+  fprintf(json_file, "    \"Size_of_Headers\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.SizeOfHeaders);
+  fprintf(json_file, "    \"Checksum\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.CheckSum);
+  fprintf(json_file, "    \"Subsystem\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.Subsystem);
+  fprintf(json_file, "    \"DLL_Characteristics\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.DllCharacteristics);
+  fprintf(json_file, "    \"Size_of_Stack_Reserve\": \"0x%llx\",\n",
+          pNtHeaders->OptionalHeader.SizeOfStackReserve);
+  fprintf(json_file, "    \"Size_of_Stack_Commit\": \"0x%llx\",\n",
+          pNtHeaders->OptionalHeader.SizeOfStackCommit);
+  fprintf(json_file, "    \"Size_of_Heap_Reserve\": \"0x%llx\",\n",
+          pNtHeaders->OptionalHeader.SizeOfHeapReserve);
+  fprintf(json_file, "    \"Size_of_Heap_Commit\": \"0x%llx\",\n",
+          pNtHeaders->OptionalHeader.SizeOfHeapCommit);
+  fprintf(json_file, "    \"Loader_Flags\": \"0x%x\",\n",
+          pNtHeaders->OptionalHeader.LoaderFlags);
+  fprintf(json_file, "    \"Number_of_Rva_and_Sizes\": \"0x%x\"\n",
+          pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
+  fprintf(json_file, "  }\n");
+  fprintf(json_file, "}\n");
+}
