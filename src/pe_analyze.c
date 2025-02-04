@@ -22,7 +22,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
         return;
     }
 
-    fprintf(json_file, "{%s:\n", pe_path);
+    fprintf(json_file, "%s: {\n", pe_path);
   };
 
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -82,7 +82,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
       optional_headers_to_json(pNtHeaders, json_file);
     }
 
-    fprintf(json_file, "}");
+    fprintf(json_file, "},");
   }
 
   UnmapViewOfFile(pBase);
