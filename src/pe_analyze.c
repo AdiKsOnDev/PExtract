@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include "../include/pe_analyze.h"
 #include "../include/disassembly.h"
@@ -20,6 +21,8 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
         perror("Failed to open JSON file");
         return;
     }
+
+    fprintf(json_file, "%s: {", pe_path);
   };
 
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -78,6 +81,8 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
       section_names_to_json(pDosHeader, pNtHeaders, file, json_file);
       optional_headers_to_json(pNtHeaders, json_file);
     }
+
+    fprintf(json_file, "}")
   }
 
   UnmapViewOfFile(pBase);
