@@ -5,8 +5,8 @@
 #include <libgen.h>
 #include <stdio.h>
 
-#define OPTSTR "vi:vd:o:h"
-#define USAGE_FMT "%s [-v] [-d directoryPath | -i inputfile] [-o JSON] [-s] [-h]\n"
+#define OPTSTR "vsi:vsd:o:h"
+#define USAGE_FMT "%s [-v] [-s] [-d directoryPath | -i inputfile] [-o JSON] [-h]\n"
 
 extern char *optarg;
 extern int opterr, optind;
