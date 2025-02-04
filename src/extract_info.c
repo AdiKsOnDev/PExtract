@@ -173,6 +173,7 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
   WIN32_FIND_DATA findFileData;
   HANDLE hFind = INVALID_HANDLE_VALUE;
   char searchPath[MAX_PATH_LENGTH];
+  FILE *json_file;
 
   snprintf(searchPath, MAX_PATH_LENGTH, "%s\\*", directory);
   hFind = FindFirstFile(searchPath, &findFileData);
@@ -186,7 +187,7 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
     }
 
     fprintf(json_file, "{");
-    fclose(json_file)
+    fclose(json_file);
   };
 
   if (hFind == INVALID_HANDLE_VALUE) {
@@ -226,7 +227,7 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
       }
 
       fprintf(json_file, "}");
-      fclose(json_file)
+      fclose(json_file);
     };
 
     FindClose(hFind);
