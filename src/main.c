@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  analyze_pe_file(options.input, options.verbose);
+  analyze_pe_file(options.input, options.verbose, options.silent, options.output);
   return 0;
 }
 
