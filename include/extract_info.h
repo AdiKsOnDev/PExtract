@@ -54,4 +54,53 @@ void print_optional_headers(PIMAGE_NT_HEADERS pNtHeaders);
  */
 void listFiles(int verbose, const char *directory, int silent, char *output);
 
+/* Given the DOS Header of a PE file,
+ * extracts all the info from PIMAGE_DOS_HEADER structure
+ * and saves it to a JSON file
+ * -------------------------------------------
+ * param: pDosHeader, DOS Header of a PE file
+ * param: json_file, JSON file to be written to
+ *
+ * return: void
+ */
+void DOS_header_to_json(PIMAGE_DOS_HEADER pDosHeader, FILE *json_file);
+
+/* Given DOS and NT Headers of a PE file,
+ * extracts the section names used in the executable
+ * and saves them to a JSON file
+ * -------------------------------------------
+ * param: pDosHeader, DOS Header of a PE file
+ * param: pNtHeaders, NT Headers of a PE file
+ * param: file, Pointer to the executable file
+ * param: json_file, JSON file to be written to
+ *
+ * return: void
+ */
+void section_names_to_json(PIMAGE_DOS_HEADER pDosHeader,
+                           PIMAGE_NT_HEADERS pNtHeaders, FILE *file,
+                           FILE *json_file);
+
+/* Given pBase and NT Headers of a PE file,
+ * extracts the DLLs imported in the executable
+ * and saves them into a JSON file
+ * -------------------------------------------
+ * param: pBase,
+ * param: pNtHeaders, NT Headers of a PE file
+ * param: json_file, JSON file to be written to
+ *
+ * return: void
+ */
+void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
+                           FILE *json_file);
+
+/* Given the Headers of a PE file, extracts and saves
+ * OptionalHeader fields into a JSON
+ * -------------------------------------------
+ * param: pNtHeaders, NT Headers of a PE file
+ * param: json_file, JSON file to be written to
+ *
+ * return: void
+ */
+void optional_headers_to_json(PIMAGE_NT_HEADERS pNtHeaders, FILE *json_file);
+
 #endif // !EXTRACT_FUNCTIONS
