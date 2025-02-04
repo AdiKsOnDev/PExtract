@@ -1,6 +1,6 @@
 # Compiler and flags
 CC := gcc
-CFLAGS := -Wall -g -O3 -mconsole
+CFLAGS := -g -O3 -mconsole
 
 # Directories
 ROOTDIR := .
