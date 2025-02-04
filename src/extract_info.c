@@ -2,7 +2,7 @@
 #include "../include/pe_analyze.h"
 
 // DOS Header extraction, check the header file for documentation
-void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
+void print_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
   printf("\033[34me_magic:\033[0m    %d\n", pDosHeader->e_magic);
   printf("\033[34me_cblp:\033[0m     %d\n", pDosHeader->e_cblp);
   printf("\033[34me_cp:\033[0m       %d\n", pDosHeader->e_cp);
@@ -26,7 +26,7 @@ void extract_DOS_header_info(PIMAGE_DOS_HEADER pDosHeader) {
   return;
 }
 
-void extract_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHeaders, FILE *file) {
+void print_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHeaders, FILE *file) {
   // Move to the section headers
   IMAGE_SECTION_HEADER sectionHeader;
   fseek(file, pDosHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS), SEEK_SET);
@@ -39,7 +39,7 @@ void extract_section_names(PIMAGE_DOS_HEADER pDosHeader, PIMAGE_NT_HEADERS pNtHe
 }
 
 // Imported DLLs extraction, check the header file for documentation
-void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
+void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
   DWORD importDirectoryRVA =
       pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
           .VirtualAddress;
@@ -98,7 +98,7 @@ void extract_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
 }
 
 // Optional Headers extraction, check the header file for documentation
-void extract_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
+void print_optional_headers(PIMAGE_NT_HEADERS pNtHeaders) {
    printf("\033[34mMagic:\033[0m 0x%x\n", pNtHeaders->OptionalHeader.Magic);
    printf("\033[34mMajor Linker Version:\033[0m %d\n",
           pNtHeaders->OptionalHeader.MajorLinkerVersion);

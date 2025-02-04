@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #define OPTSTR "vi:vd:o:h"
-#define USAGE_FMT "%s [-v] [-d directoryPath] [-i inputfile] [-o outputfile] [-h]\n"
+#define USAGE_FMT "%s [-v] [-d directoryPath | -i inputfile] [-o JSON] [-s] [-h]\n"
 
 extern char *optarg;
 extern int opterr, optind;
@@ -15,6 +15,7 @@ typedef struct {
   int     verbose;
   int     directory;
   char   *input;
+  int     silent;
   char   *output;
 } options_t;
 
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]) {
   }
 
   int opt;
-  options_t options = {0, 0, "", ""};
+  options_t options = {0, 0, "", 0, ""};
 
   opterr = 0;
 
@@ -50,6 +51,10 @@ int main(int argc, char *argv[]) {
 
       case 'v':
         options.verbose = 1;
+        break;
+
+      case 's':
+        options.silent = 1;
         break;
 
       case 'h':

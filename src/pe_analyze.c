@@ -1,7 +1,7 @@
 #include "../include/pe_analyze.h"
 #include "../include/disassembly.h"
 
-void analyze_pe_file(char *pe_path, int verbose) {
+void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   printf("\033[32mAnalysing file --> %s\n\033[0m", pe_path);
   printf("==============================================\n");
 
@@ -38,10 +38,9 @@ void analyze_pe_file(char *pe_path, int verbose) {
     return;
   }
 
-  extract_DOS_header_info(pDosHeader);
-
   PIMAGE_NT_HEADERS pNtHeaders =
       (PIMAGE_NT_HEADERS)((DWORD_PTR)pBase + pDosHeader->e_lfanew);
+
   if (pNtHeaders->Signature != IMAGE_NT_SIGNATURE) {
     printf("\033[31mNot a valid NT file.\n\033[0m");
     UnmapViewOfFile(pBase);
@@ -50,9 +49,12 @@ void analyze_pe_file(char *pe_path, int verbose) {
     return;
   }
 
-  extract_imported_dlls((PBYTE)pBase, pNtHeaders);
-  extract_section_names(pDosHeader, pNtHeaders, file);
-  extract_optional_headers(pNtHeaders);
+  if (!silent) {
+    print_DOS_header_info(pDosHeader);
+    print_imported_dlls((PBYTE)pBase, pNtHeaders);
+    print_section_names(pDosHeader, pNtHeaders, file);
+    print_optional_headers(pNtHeaders);
+  }
 
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
