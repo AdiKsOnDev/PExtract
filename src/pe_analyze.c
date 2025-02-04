@@ -52,8 +52,10 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   if (!silent) {
     print_DOS_header_info(pDosHeader);
     print_imported_dlls((PBYTE)pBase, pNtHeaders);
-    print_section_names(pDosHeader, pNtHeaders, file);
-    print_optional_headers(pNtHeaders);
+    if (verbose) {
+      print_section_names(pDosHeader, pNtHeaders, file);
+      print_optional_headers(pNtHeaders);
+    }
   }
 
   UnmapViewOfFile(pBase);
