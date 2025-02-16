@@ -198,12 +198,13 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
   } else {
     printf("Listing files in directory: %s\n", directory);
     do {
-      if (verbose) {
+      if (verbose && !silent) {
         printf("Found: %s\n", findFileData.cFileName);
-        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-          printf("Skipping directory: %s\n", findFileData.cFileName);
-          continue;
-        }
+      }
+
+      if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        printf("Skipping directory: %s\n", findFileData.cFileName);
+        continue;
       }
 
       char filePath[MAX_PATH_LENGTH];
