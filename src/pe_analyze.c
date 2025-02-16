@@ -47,7 +47,9 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
 
   PIMAGE_DOS_HEADER pDosHeader = (PIMAGE_DOS_HEADER)pBase;
   if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE) {
-    printf("\033[31mNot a valid DOS file.\n\033[0m");
+    if (!silent) {
+      printf("\033[31mNot a valid DOS file.\n\033[0m");
+    }
     UnmapViewOfFile(pBase);
     CloseHandle(hMap);
     CloseHandle(hFile);
@@ -58,7 +60,9 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
       (PIMAGE_NT_HEADERS)((DWORD_PTR)pBase + pDosHeader->e_lfanew);
 
   if (pNtHeaders->Signature != IMAGE_NT_SIGNATURE) {
-    printf("\033[31mNot a valid NT file.\n\033[0m");
+    if (!silent) {
+      printf("\033[31mNot a valid NT file.\n\033[0m");
+    }
     UnmapViewOfFile(pBase);
     CloseHandle(hMap);
     CloseHandle(hFile);
