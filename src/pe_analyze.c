@@ -88,10 +88,10 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     }
 
     fprintf(json_file, "},");
+    fclose(json_file);
   }
 
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
   CloseHandle(hFile);
-  fclose(json_file);
 }
