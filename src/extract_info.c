@@ -183,6 +183,7 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
 
     if (!json_file) {
         perror("Failed to open JSON file");
+        fclose(json_file);
         return;
     }
 
@@ -224,6 +225,7 @@ void listFiles(int verbose, const char *directory, int silent, char *output) {
 
       if (!json_file) {
           perror("Failed to open JSON file");
+          fclose(json_file);
           return;
       }
 

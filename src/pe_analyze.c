@@ -19,6 +19,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
 
     if (!json_file) {
         perror("Failed to open JSON file");
+        fclose(json_file);
         return;
     }
 
@@ -92,4 +93,5 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
   CloseHandle(hFile);
+  fclose(json_file);
 }
