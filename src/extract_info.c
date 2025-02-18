@@ -300,6 +300,11 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
 
   fprintf(json_file, "  \"Imported_DLLs\": [\n");
 
+  if (pImportDesc == NULL || IsBadReadPtr(pImportDesc, sizeof(PIMAGE_IMPORT_DESCRIPTOR))) {
+    printf("Invalid pImportDesc pointer.\n");
+    return;
+  }
+
   while (pImportDesc->Name != 0) {
     DWORD nameOffset = rva_to_offset(pNtHeaders, pImportDesc->Name);
 
