@@ -57,7 +57,7 @@ void print_imported_dlls(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders) {
 
   printf("Imported DLLs:\n");
 
-  if (pImportDesc == NULL) {
+  if (pImportDesc == NULL || IsBadReadPtr(pImportDesc, sizeof(PIMAGE_IMPORT_DESCRIPTOR))) {
     printf("Invalid pImportDesc pointer.\n");
     return;
   }
