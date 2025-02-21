@@ -11,7 +11,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
 
   HANDLE hFile = CreateFile(pe_path, GENERIC_READ, FILE_SHARE_READ, NULL,
                             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-  FILE *file = fopen(pe_path, "rb");
+  FILE *file;
   FILE *json_file;
 
   if (strcmp(output, "") != 0) {
@@ -24,6 +24,7 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     }
 
     fprintf(json_file, "\"%s\": {\n", pe_path);
+    fclose(json_file);
   };
 
   if (hFile == INVALID_HANDLE_VALUE) {
@@ -74,7 +75,9 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     print_DOS_header_info(pDosHeader);
     print_imported_dlls((PBYTE)pBase, pNtHeaders);
     if (verbose) {
+      file = fopen(pe_path, "rb");
       print_section_names(pDosHeader, pNtHeaders, file);
+      fclose(file);
       print_optional_headers(pNtHeaders);
     }
   }
