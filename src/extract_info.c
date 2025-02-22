@@ -426,5 +426,5 @@ void optional_headers_to_json(PIMAGE_NT_HEADERS pNtHeaders, FILE *json_file) {
           pNtHeaders->OptionalHeader.LoaderFlags);
   fprintf(json_file, "    \"Number_of_Rva_and_Sizes\": \"0x%x\"\n",
           pNtHeaders->OptionalHeader.NumberOfRvaAndSizes);
-  fprintf(json_file, "  },\n");
+  fprintf(json_file, "  }\n");
 }
