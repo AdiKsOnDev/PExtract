@@ -14,19 +14,6 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
   FILE *file;
   FILE *json_file;
 
-  if (strcmp(output, "") != 0) {
-    json_file = fopen(output, "a");
-
-    if (!json_file) {
-        perror("Failed to open JSON file");
-        fclose(json_file);
-        return;
-    }
-
-    fprintf(json_file, "\"%s\": {\n", pe_path);
-    fclose(json_file);
-  };
-
   if (hFile == INVALID_HANDLE_VALUE) {
     printf("\033[31mFailed to open file.\n\033[0m");
     return;
@@ -70,6 +57,19 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     CloseHandle(hFile);
     return;
   }
+
+  if (strcmp(output, "") != 0) {
+    json_file = fopen(output, "a");
+
+    if (!json_file) {
+        perror("Failed to open JSON file");
+        fclose(json_file);
+        return;
+    }
+
+    fprintf(json_file, "\"%s\": {\n", pe_path);
+    fclose(json_file);
+  };
 
   if (!silent) {
     print_DOS_header_info(pDosHeader);
