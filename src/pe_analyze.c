@@ -96,7 +96,6 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     fclose(json_file);
   }
 
-  fclose(file);
   UnmapViewOfFile(pBase);
   CloseHandle(hMap);
   CloseHandle(hFile);
