@@ -86,7 +86,9 @@ void analyze_pe_file(char *pe_path, int verbose, int silent, char *output) {
     DOS_header_to_json(pDosHeader, json_file);
     imported_dlls_to_json(pBase, pNtHeaders, json_file);
     if (verbose) {
+      file = fopen(pe_path, "rb");
       section_names_to_json(pDosHeader, pNtHeaders, file, json_file);
+      fclose(file);
       optional_headers_to_json(pNtHeaders, json_file);
     }
 
