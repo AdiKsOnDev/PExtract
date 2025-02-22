@@ -302,6 +302,9 @@ void imported_dlls_to_json(PBYTE pBase, PIMAGE_NT_HEADERS pNtHeaders,
 
   if (pImportDesc == NULL || IsBadReadPtr(pImportDesc, sizeof(PIMAGE_IMPORT_DESCRIPTOR))) {
     printf("Invalid pImportDesc pointer.\n");
+
+    fprintf(json_file, "      ]\n");
+    fprintf(json_file, "    }%s\n", (pImportDesc[1].Name == 0) ? "" : ",");
     return;
   }
 
